@@ -174,26 +174,7 @@ def payments(request):
     CartItem.objects.filter(user=request.user).delete()
 
 
-    # Send order recieved email to cutomer 
-    #subject = 'Thank you for your order!'
-    #message = render_to_string('shop/orders/checkout/payment_recieved_email.html', {
-    #    'user': request.user,
-    #    'order':order,
-    #})
-    #to_email = request.user.email
-    #send_email = EmailMessage(subject, message, to=[to_email])
-    #send_email.send()
-#
-    #
-    ## Send order recieved email to admin account 
-    #subject = 'Thank you for your order!'
-    #message = render_to_string('shop/orders/checkout/payment_recieved_email.html', {
-    #    'user': request.user,
-    #    'order':order,
-    #})
-    #to_email = request.user.email
-    #send_email = EmailMessage(subject, message, to=['eshopsuppo@gmail.com'])
-    #send_email.send()
+    
 
     # Send order number and transation id back to sendDate method via JavaResponse
     data = {
