@@ -64,7 +64,7 @@
 										<td>
 										<div class="plus-minus" >
 										<form action="{% url 'cart:add_cart' cart_item.product.id %}" method="POST">
-											<a style="background:#232323;color:#fff;height:35px;margin-top:-5px;width:40px; border-radius: 4px;" href="{% url 'cart:remove_cart' cart_item.product.id cart_item.id %}" ><i class="fa fa-minus"></i></a>
+											<!--<a style="background:#232323;color:#fff;height:35px;margin-top:-5px;width:40px; border-radius: 4px;" href="{% url 'cart:remove_cart' cart_item.product.id cart_item.id %}" ><i class="fa fa-minus"></i></a>-->
 											<input style=" height:35px"  class="form-control" value="{{cart_item.quantity}}" readonly>
 											<!-- <a style="background:#232323;color:#fff" href="{% url 'cart:add_cart' cart_item.product.id %}" >+</a> -->
 											<!--
@@ -80,7 +80,7 @@
 											{% for item in cart_item.variation.all %}
 											<input type="hidden" name={{ item.variation_category | capfirst }} value={{ item.variation_value |capfirst }}>
 											{% endfor %}
-											<button style="background:#232323;color:#fff; height:35px; margin-top:-3px " class="btn btn-light" type="submit" id="button-minus"> <i class="fa fa-plus"></i> </button>
+											<!-- <button style="background:#232323;color:#fff; height:35px; margin-top:-3px " class="btn btn-light" type="submit" id="button-minus"> <i class="fa fa-plus"></i> </button>-->
 											</form>
 										</div>
 										</td>
@@ -102,7 +102,7 @@
 											<td style="font-size:18px">Ksh {{total}}</td>
 										</tr>
 										<tr>
-											<th style="font-size:18px">Shipping and Handing</th>
+											<th style="font-size:18px">Delivery</th>
 											<td style="font-size:18px">Ksh {{handing}}</td>
 										</tr>
 										<tr>

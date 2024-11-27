@@ -43,7 +43,7 @@ def checkout(request, total=0, total_price=0, quantity=0, cart_items=None):
 
     tax = round(((2 * total_price)/100), 2)
     grand_total = total_price + tax
-    handing = 15.00
+    handing = 500.00
     total = float(grand_total) + handing
 
     context = {
@@ -60,7 +60,7 @@ def checkout(request, total=0, total_price=0, quantity=0, cart_items=None):
 @login_required(login_url= 'accounts:login')
 def payment(request, total=0, quantity=0):
     current_user = request.user
-    handing = 15.0
+    handing = 500.00
     # if the cart cout less than 0 , redirect to shop page 
     cart_items = CartItem.objects.filter(user=current_user)
     cart_count = cart_items.count()
@@ -75,7 +75,7 @@ def payment(request, total=0, quantity=0):
     tax = round(((2 * total)/100), 2)
 
     grand_total = total + tax
-    handing = 15.00
+    handing = 500.00
     total = float(grand_total) + handing
 
     if request.method == 'POST':
@@ -89,9 +89,7 @@ def payment(request, total=0, quantity=0):
             data.phone = form.cleaned_data['phone']
             data.email = form.cleaned_data['email']
             data.address = form.cleaned_data['address']
-            data.country = form.cleaned_data['country']
-            data.state = form.cleaned_data['state']
-            data.city = form.cleaned_data['city']
+            data.county = form.cleaned_data['county']
             data.order_note = form.cleaned_data['order_note']
             data.order_total = total
             data.tax = tax
@@ -129,7 +127,7 @@ def payments(request):
     body = json.loads(request.body)
     order = Order.objects.get(user=request.user, is_ordered=False, order_number=body['orderID'])
 
-    # Store transation details inside payment model
+    # Store transaction details inside payment model
     payment = Payment(
         user = request.user,
         payment_id = body['transID'],
@@ -174,9 +172,28 @@ def payments(request):
     CartItem.objects.filter(user=request.user).delete()
 
 
-    
+    # Send order recieved email to cutomer 
+    #subject = 'Thank you for your order!'
+    #message = render_to_string('shop/orders/checkout/payment_recieved_email.html', {
+    #    'user': request.user,
+    #    'order':order,
+    #})
+    #to_email = request.user.email
+    #send_email = EmailMessage(subject, message, to=[to_email])
+    #send_email.send()
+#
+    #
+    ## Send order recieved email to admin account 
+    #subject = 'Thank you for your order!'
+    #message = render_to_string('shop/orders/checkout/payment_recieved_email.html', {
+    #    'user': request.user,
+    #    'order':order,
+    #})
+    #to_email = request.user.email
+    #send_email = EmailMessage(subject, message, to=['eshopsuppo@gmail.com'])
+    #send_email.send()
 
-    # Send order number and transation id back to sendDate method via JavaResponse
+    # Send order number and transaction id back to sendDate method via JavaResponse
     data = {
         'order_number': order.order_number,
         'transID' : payment.payment_id,

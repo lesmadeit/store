@@ -76,7 +76,7 @@ def counter(request):
             
             tax = round(((2 * total_price)/100), 2)
             grand_total = total_price + tax
-            handing = 15.00
+            handing = 500.00
             total = float(grand_total) + handing
             
         except Cart.DoesNotExist:

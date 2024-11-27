@@ -4,9 +4,9 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 class AccountManager(BaseUserManager):
     def create_user(self, first_name, last_name, username, email, password=None):
         if not email :
-            raise ValueError('User must have an email address')
+            raise ValueError('Users must have an email address')
         if not username :
-            raise ValueError('User must have a username')
+            raise ValueError('Users must have a username')
         
         user = self.model(
 
@@ -79,9 +79,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(Account, on_delete=models.CASCADE)
     address = models.TextField(blank=True)
     profile_picture = models.ImageField(blank=True, upload_to='userprofile', default='static/user_image_default.png')
-    city = models.CharField(blank=True, max_length=20)
-    state = models.CharField(blank=True, max_length=20)
-    country = models.CharField(blank=True, max_length=20)
+    county = models.CharField(blank=True, max_length=20)
+    
 
     def __str__(self):
         return self.user.first_name

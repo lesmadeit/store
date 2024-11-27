@@ -97,7 +97,7 @@ def contact_us(request):
                 ['lesliemwendwa10@gmail.com'],  # To (your email)
             )
             messages.success(request, 'Your message has been sent successfully!')
-            return redirect('shop:contact_us')  # Replace with the name of your contact URL
+            return redirect('shop:contact_us')  
     else:
         form = ContactForm()
     

@@ -99,7 +99,7 @@
 												<div class="product-dsc">
 													
 													<p><a style="color:#d99879" href="{{product.get_product_details_url}}">{{product.name}}</a></p>
-													<span>Ksh{{product.price}}</span><br><br>
+													<span>Ksh {{product.price}}</span><br><br>
 													<div style="font-size:16px" class="rating-star">
 														<span>
 														<i class="fa fa-star{% if product.averageRating < 0.5 %}-o{% elif product.averageRating >= 0.5 and product.averageRating < 1 %}-half-o {% endif %}" aria-hidden="true"></i>

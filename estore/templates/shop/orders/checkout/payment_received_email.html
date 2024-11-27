@@ -53,13 +53,10 @@
                   <td style="font-size:15px">{{order.address}}</td>
                 </tr>
                 <tr>
-                  <th style="font-size:15px">City</th>
-                  <td style="font-size:15px">{{order.city}}</td>
+                  <th style="font-size:15px">County</th>
+                  <td style="font-size:15px">{{order.county}}</td>
                 </tr>
-                <tr>
-                  <th style="font-size:15px">Country</th>
-                  <td style="font-size:15px">{{order.country}}</td>
-                </tr>
+                
                 {% if order.order_note %}
                 <tr>
                   <th style="font-size:15px">Order Note</th>
@@ -97,7 +94,7 @@
                 </tr>
                 {% endfor %}
                 <tr>
-                  <th>Shipping and Handing</th>
+                  <th>Delivery</th>
                   <td>Ksh {{handing}}</td>
                 </tr>
                 <tr>

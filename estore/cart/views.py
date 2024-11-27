@@ -218,7 +218,7 @@ def cart(request, total_price=0, quantity=0, cart_items=None):
     
     tax = round(((2 * total_price)/100), 2)
     grand_total = total_price + tax
-    handing = 15.00
+    handing = 500.00
     total = float(grand_total) + handing
 
     context = {

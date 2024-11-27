@@ -3,7 +3,13 @@ from .models import Payment, Order, OrderProduct
 from django.utils.html import format_html
 
 
-
+# class OrderProductInline(admin.TabularInline):
+#     # def thumbnail(self, object): 'thumbnail',
+#     #     return format_html('<img src="{}" width="75" height="110">'.format(object.product.image.url))
+#     # thumbnail.short_description = 'Product Picture'
+#     model = OrderProduct
+#     readonly_fields = ['product','variations','product_price', 'quantity','user','payment',    'ordered',  ]
+#     extra = 0
 
 class OrderProductInline(admin.TabularInline):
     def thumbnail(self, object):

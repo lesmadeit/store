@@ -165,8 +165,8 @@ MESSAGE_TAGS = {
 PASSWORD_RESET_TIMEOUT_DAYS = 1
 
 
-#EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend" #(for dummy activation for demonstration purporses)
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' #(for real email activation)
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
