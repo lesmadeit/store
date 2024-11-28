@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}E-Store{% endblock title %}
+{% block content %}
+        
+
+        <!-- header section end -->
+        <!-- slider-section-start -->
+        <div style="margin-top:50px;margin-bottom:50px"   class=" container main-slider-one main-slider-two slider-area">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <div class=" carousel-inner">
+                    <div class="carousel-item active">
+                        <img style="width: 100%;height: auto;" class="d-block w-100"  src="{% static 'img/ecommerce-4.jpg' %}" alt="First slide">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <!-- slider section end -->
+        <!-- collection section start -->
+        <section style="background:#ffffff;"  class="collection-area collection-area2 section-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="single-colect banner collect-one">
+                            <a href="{% url 'shop:shop' %}"><img src="{% static 'img/new/side.jpg' %}" alt="" /></a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="colect-text ">
+                            <h4><a style="color: #0c0c0c;" href="{% url 'shop:shop' %}">Top Products</a></h4>
+                            <h5 style="color: #0c0c0c;" >Shop for top products this week </h5>
+                            <a style="color: #0c0c0c;" href="{% url 'shop:shop' %}">Shop Now <i class="mdi mdi-arrow-right" ></i></a>
+                        </div>
+                        <div class="collect-img banner margin single-colect">
+                            <a href="{% url 'shop:shop' %}"><img src="{% static 'img/new/elephant.jpg' %}" alt="" /></a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="collect-img banner single-colect">
+                            <a href="{% url 'shop:shop' %}"><img src="{% static 'img/new/woman.jpg' %}" alt="" /></a>
+                        </div>
+                        <div class="colect-text ">
+                            <h4><a style="color: #0c0c0c;" href="{% url 'shop:shop' %}">Art Collection</a></h4>
+                            <p style="color: #0c0c0c;" >We have a variety of art collections you can choose from.</p>
+                            <a style="color: #0c0c0c;" href="{% url 'shop:shop' %}">Shop Now <i class="mdi mdi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <br><br>
+        <!-- collection section end -->
+        <!-- featured-products section start -->
+        <section style="background-color: #ffffff" class="single-products  products-two section-padding extra-padding-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="section-title text-center">
+                            <h2 style="color: #0c0c0c;">Featured Products</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="wrapper">
+                    <ul class="load-list load-list-one">
+                        <li>
+                            <div class="row text-center">
+                                {% for product in featured_products %}
+                                <div class="col-xs-12 col-sm-6 col-md-3">
+                                    <div class="single-product" style="border-radius: 15px; overflow: hidden;">
+                                        <div class="product-img" >
+                                            <div class="pro-type"></div>
+                                            <img style="width:100%; height:350px" src="{{ product.image.url }}" alt="Product Title" />
+                                            <div class="actions-btn">
+                                                <a href="{% url 'cart:add_cart' product.id %}"><i class="mdi mdi-cart"></i></a>
+                                                <a href="{{product.get_product_details_url}}"><i class="mdi mdi-eye"></i></a>
+                                                
+                                            </div>
+                                        </div>
+                                        <div style="background-color: #034d15;"class="product-dsc">
+                                            <p><a style="color: #f4cca4;">{{ product.name }}</a></p>
+                                            <span style="color: #f4cca4;">Ksh {{ product.price }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <p>No featured products available</p>
+                                {% endfor %}
+                                
+                            </div>
+                        </li>
+                    </ul><br>
+                    
+                </div>
+            </div>
+        </section>
+        <!-- featured-products section end -->
+		
+        
+        <!-- tab-products section start -->
+        <div class="tab-products single-products products-two section-padding extra-padding-top" style="background-color: #ffffff;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="section-title text-center">
+                            <div class="col-xs-12">
+                                <div class="section-title text-center">
+                                    <h2 style="color: #0c0c0c;">Products</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center tab-content">
+					<div class="tab-pane  fade in active" id="all">
+						<div class="wrapper">
+							<ul class="load-list load-list-two">
+								<li>
+									<div class="row text-center">
+										{% for product in products|slice:':8' %}
+										<div  class="col-xs-12 col-sm-6 col-md-3" >
+											<div style="margin-top:10px; border-radius: 15px; overflow: hidden;" style="width:100%; height:500px" class="single-product" >
+												<div class="product-img" >
+													<a><img style="width:100%; height:350px"src="{{ product.image.url}}" alt="Product Title" /></a>
+													<div class="actions-btn">
+														<a href="{% url 'cart:add_cart' product.id %}"><i class="mdi mdi-cart"></i></a>
+														<a href="{{product.get_product_details_url}}" data-toggle="modal"><i class="mdi mdi-eye"></i></a>
+														
+													</div>
+												</div>
+												<div class="product-dsc" style="background-color: #034d15;">
+													<p>{{product.name}}</a></p>
+													<span>Ksh {{product.price}}</span>
+												</div>
+											</div>
+										</div>
+										{% endfor %}
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+            </div>
+        </div><br><br>
+        <!-- tab-products section end -->
+        
+        
+{% endblock content %}
