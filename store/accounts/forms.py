@@ -3,11 +3,11 @@ from .models import Account, UserProfile
 
 class RegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={
-        #'placeholder' : 'Enter Password',
+        'placeholder' : 'Enter Password',
         'class' : 'form-control',
     }))
     repeat_password = forms.CharField(widget=forms.PasswordInput(attrs={
-        #'placeholder' : 'Repeat Password',
+        'placeholder' : 'Repeat Password',
         'class' : 'form-control',
     }))
     class Meta:
@@ -16,10 +16,7 @@ class RegistrationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
-        #self.fields['first_name'].widget.attrs['placeholder'] = 'First name'
-        #self.fields['last_name'].widget.attrs['placeholder'] = 'Last name'
-        #self.fields['email'].widget.attrs['placeholder'] = 'Email'
-        #self.fields['Phone_number'].widget.attrs['placeholder'] = 'Phone Number'
+        
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'input100'
 
