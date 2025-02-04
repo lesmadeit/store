@@ -2157,3 +2157,25 @@ label:hover ~ input:checked ~ label{
   color: #ffb503 !important;
   font-size: 1.8rem;
 }
+
+
+.custom-input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px; /* Rounded left corners */
+    background-color: #fff;
+    color: #333;
+    font-size: 16px;
+}
+
+.custom-input-field:focus {
+    border-color: #f4cca4; /* Highlight color when focused */
+    outline: none;
+}
+
+
+.custom-input label {
+    color: black;
+    font-weight: bold; /* Optional: Make the label text bold */
+}

@@ -26,33 +26,30 @@
         <div class="row">
         <form action="{% url 'orders:payment' %}" method="post">
         {% csrf_token %}
-            <div class="col-sm-6">
-                <div style="border-radius:20px; background-color: #9c9696;" class="main-input single-cart-form padding60">
-                    <div class="log-title text-center">
-                        <h3><strong style="color:#0c0c0c">Billing Address</strong></h3>
+        <div class="col-sm-6">
+            <div style="border-radius:20px; background-color: #9c9696;" class="main-input single-cart-form padding60">
+                <div class="log-title text-center">
+                    <h3><strong style="color:#0c0c0c">Billing Address</strong></h3>
+                </div>
+                <div class="custom-input">
+                    {% for field in form %}
+                    <div>
+                        {{ field.label_tag}}
+                        {{ field }}
+                        {% if field.errors %}
+                        <div class="text-danger">
+                            {{ field.errors.0 }}  <!-- Display first error -->
+                        </div>
+                        {% endif %}
                     </div>
-                    <div class="custom-input">
-                        
-                            <input type="text" name="first_name" placeholder="First Name" required />
-                            <input type="text" name="last_name" placeholder="Last Name" required />
-                            <input type="text" name="email" placeholder="Email" required />
-                            <input type="text" name="phone" placeholder="Phone Number" required />
-                            <input type="text" name="county" placeholder="County" required />
-                            
-                            <div class="custom-mess">
-                                <textarea rows="2" placeholder="Address" name="address" required></textarea>
-                            </div>
-                            <div class="custom-mess">
-                                <textarea rows="2" placeholder="Order Notes" name="order_note"></textarea>
-                            </div>
-                        
-                    </div>
-                </div><br>
-            </div>
+                    {% endfor %}  <!-- Render form dynamically -->
+                </div>
+            </div><br>
+        </div>
             <div class="col-xs-12 col-sm-6">
                 <div style="border-radius:10px; background-color: #9c9696;" class="padding60">
                     <div class="log-title text-center">
-                        <h3><strong style="color:#0c0c0c">Our order</strong></h3>
+                        <h3><strong style="color:#0c0c0c">Your order</strong></h3>
                     </div>
                     <div class="cart-form-text pay-details table-responsive">
                         <table>
@@ -69,17 +66,10 @@
                                     <td style="color: #ffffff;">Ksh {{cart_item.sub_total}}</td>
                                 </tr>
                                 {% endfor %}
-                                <tr>
-                                    <th style="color: #ffffff;">Delivery</th>
-                                    <td style="color: #ffffff;">Ksh {{handing}}</td>
-                                </tr>
-                                <tr>
-                                    <th style="color: #ffffff;">Vat</th>
-                                    <td style="color: #ffffff;">Ksh {{vat}}</td>
-                                </tr>
+                             
                                 <tr style="color:#0c0c0c">
                                     <th>Order total</th>
-                                    <td>Ksh {{order_total}}</td>
+                                    <td>Ksh {{total_price}}</td>
                                 </tr>
                             </tbody>
                             <tfoot>

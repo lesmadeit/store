@@ -64,9 +64,9 @@
 										<td>
 										<div class="plus-minus" >
 										<form action="{% url 'cart:add_cart' cart_item.product.id %}" method="POST">
-											<!--<a style="background:#232323;color:#fff;height:35px;margin-top:-5px;width:40px; border-radius: 4px;" href="{% url 'cart:remove_cart' cart_item.product.id cart_item.id %}" ><i class="fa fa-minus"></i></a>-->
+											<a style="background:#232323;color:#fff;height:35px;margin-top:-5px;width:40px; border-radius: 4px;" href="{% url 'cart:remove_cart' cart_item.product.id cart_item.id %}" ><i class="fa fa-minus"></i></a>
 											<input style=" height:35px"  class="form-control" value="{{cart_item.quantity}}" readonly>
-											<!-- <a style="background:#232323;color:#fff" href="{% url 'cart:add_cart' cart_item.product.id %}" >+</a> -->
+											<a style="background:#232323;color:#fff;height:35px;margin-top:-5px;width:40px; border-radius: 4px;" href="{% url 'cart:add_cart' cart_item.product.id %}" ><i class="fa fa-plus"></i></a>
 											<!--
 											<form action="{% url 'cart:add_cart' cart_item.product.id %}" method="POST">
 												{% csrf_token %}
@@ -87,7 +87,7 @@
 										<td >
 											<strong style="color:#f4cca4">Ksh {{cart_item.sub_total}}</strong>
 										</td>
-										<td ><a href="{% url 'cart:remove_cart_item' cart_item.product.id cart_item.id %}" ><i style="background:#ba135d;color:#f4cca4" onclick="return confirm('Are you really want delete this?')" class="mdi mdi-close"></i></a></td>
+										<td ><a href="{% url 'cart:remove_cart_item' cart_item.product.id cart_item.id %}" ><i style="background:#ba135d;color:#f4cca4" onclick="return confirm('Are you sure you want delete this?')" class="mdi mdi-close"></i></a></td>
 									</tr>
 									{% endfor %}
 									<tr>
@@ -101,25 +101,19 @@
 											<th style="font-size:18px">Cart Subtotal</th>
 											<td style="font-size:18px">Ksh {{total}}</td>
 										</tr>
-										<tr>
-											<th style="font-size:18px">Delivery</th>
-											<td style="font-size:18px">Ksh {{handing}}</td>
-										</tr>
-										<tr>
-											<th style="font-size:18px">Vat</th>
-											<td style="font-size:18px">Ksh {{vat}}</td>
-										</tr>
+										
+										
 									</tbody>
 									<tfoot>
 										<tr>
 											<th style="color:#d99879; font-size:22px" class="tfoot-padd">Order total</th>
-											<td style="color:#d99879; font-size:22px" class="tfoot-padd">Ksh {{order_total}}</td>
+											<td style="color:#d99879; font-size:22px" class="tfoot-padd">Ksh {{total}}</td>
 										</tr>
 									</tfoot>
 								</table>
 								<br><br><br>
 								<div  class="list-btn text-center">
-									<a href="{% url 'orders:checkout' %}" class="btn" style="background:#f4cca4;color:#1c1427; text-transform:capitalize; font-size:18px; width:60%"><b>Checkout</b></a><br><br>
+									<a href="{% url 'orders:payment_method' %}" class="btn" style="background:#f4cca4;color:#1c1427; text-transform:capitalize; font-size:18px; width:60%"><b>Checkout</b></a><br><br>
 									<a href="{% url 'shop:shop' %}" class="btn btn-warning"    style=" background:none;color:#f4cca4; text-transform:capitalize; font-size:18px; width:60%">continue shopping</a>
 								</div>
 							</div>
@@ -127,9 +121,9 @@
 					</div>
 				</div>
                 <br>
-				<!--
+				
 				<br>
-				<div class="row margin-top">
+				<!--<div class="row margin-top">
 					
 					<div  class="col-sm-7 col-text-center">
 						<div style="background:#40394a; color:#fff" class="single-cart-form padding60">
@@ -143,19 +137,13 @@
 											<th>Cart Subtotal</th>
 											<td>Ksh {{total}}</td>
 										</tr>
-										<tr>
-											<th>Shipping and Handing</th>
-											<td>Ksh{{handing}}</td>
-										</tr>
-										<tr>
-											<th>Vat</th>
-											<td>Ksh {{vat}}</td>
-										</tr>
+										
+										
 									</tbody>
 									<tfoot>
 										<tr>
 											<th style="color:#d99879" class="tfoot-padd">Order total</th>
-											<td style="color:#d99879" class="tfoot-padd">Ksh {{order_total}}</td>
+											<td style="color:#d99879" class="tfoot-padd">Ksh {{total}}</td>
 										</tr>
 										
 								</tfoot>
@@ -170,8 +158,8 @@
 							</div>
 						</div>
 					</div>
-				</div>
-				-->
+				</div> -->
+				
 			</div>
 		</section>
 		{% endif %}

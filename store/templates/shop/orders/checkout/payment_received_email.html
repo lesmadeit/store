@@ -41,6 +41,10 @@
                   <td style="font-size:15px">{{order.full_name}}</td>
                 </tr>
                 <tr>
+                  <th style="font-size:15px">Order Number</th>
+                  <td style="font-size:15px">{{order.order_number}}</td>
+                </tr>
+                <tr>
                   <th style="font-size:15px">Email</th>
                   <td style="font-size:15px">{{order.email}}</td>
                 </tr>
@@ -48,21 +52,15 @@
                   <th style="font-size:15px">Phone Number</th>
                   <td style="font-size:15px">{{order.phone}}</td>
                 </tr>
-                <tr>
-                  <th style="font-size:15px">Address</th>
-                  <td style="font-size:15px">{{order.address}}</td>
-                </tr>
-                <tr>
-                  <th style="font-size:15px">County</th>
-                  <td style="font-size:15px">{{order.county}}</td>
-                </tr>
                 
-                {% if order.order_note %}
+                
+                
+                <!--{% if order.order_note %}
                 <tr>
                   <th style="font-size:15px">Order Note</th>
                   <td style="font-size:15px">{{order.order_note}}</td>
                 </tr>
-                {% endif %}
+                {% endif %}-->
               </tbody>
               <br>
             </table><br><br>
@@ -93,14 +91,8 @@
                   <td>Ksh {{cart_item.sub_total}}</td>
                 </tr>
                 {% endfor %}
-                <tr>
-                  <th>Delivery</th>
-                  <td>Ksh {{handing}}</td>
-                </tr>
-                <tr>
-                  <th>Vat</th>
-                  <td>Ksh {{vat}}</td>
-                </tr>
+                
+            
                 <tr style="color:#d99879">
                   <th>Order total</th>
                   <td>Ksh {{order_total}}</td>
@@ -110,12 +102,12 @@
               </tfoot>
             </table>
             <div style="width:100%" class="submit-text">
-              <!--
-                <button href="#" class="btn btn-warning"
-                style="background:#f4cca4;color:#1c1427; width:100% ; text-transform: capitalize;font-size:15px"><b>Place
-                  Order</b></button>
-              -->
-              <div id="paypal-button-container"></div>
+              
+                <button id="mpesa-pay-btn" class="btn btn-warning"
+                style="background:#f4cca4;color:#1c1427; width:100% ; text-transform: capitalize;font-size:15px"><b>Make Payment
+                  </b></button>
+              
+              
             </div>
           </div>
         </div>
@@ -124,87 +116,105 @@
   </div>
 </section>
 
-
-
 <script>
-
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].trim();
-          // Does this cookie string begin with the name we want?
-          if (cookie.substring(0, name.length + 1) === (name + '=')) {
-              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-              break;
+  function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
           }
       }
+      return cookieValue;
   }
-  return cookieValue;
-}
 
-var amount = "{{ order_total }}"
-var url = "{% url 'orders:payments' %}"
-var csrftoken = getCookie('csrftoken');
-var orderID = "{{order.order_number}}"
-var payment_method = 'PayPal'
-var redirect_url = "{% url 'orders:order_complete' %}"
-    // Render the PayPal button into #paypal-button-container
-    paypal.Buttons({
-      // Customize button (optional)
-       
-        style: {
-            // color:  'blue',
-            shape:  'rect',
-            label:  'pay',
-            height: 40
-        },
-        
-        // Set up the transaction
-        createOrder: function(data, actions) {
-          
-            return actions.order.create({
-                purchase_units: [{
-                    amount: {
-                        value: amount,
-                    }
-                }]
-            });
-            
-        },
+  var csrftoken = getCookie('csrftoken');
+  var amount = "{{ order_total }}";
+  var orderID = "{{ order.order_number }}";
+  var payment_method = "Mpesa";
+  var phone = "{{ order.phone }}";
+  var stkPushUrl = "https://ed03-154-159-252-172.ngrok-free.app/orders/online/lipa";
+  var checkStatusUrl = "https://ed03-154-159-252-172.ngrok-free.app/orders/c2b/callback";
+  var redirect_url = "{% url 'orders:order_complete' %}";
 
-		// Finalize the transaction
-		onApprove: function(data, actions) {
-			return actions.order.capture().then(function(details) {
-				// Show a success message to the buyer
-				console.log(details);
-				sendData();
-				function sendData(){
-					fetch(url, {
-						method : "POST",
-						headers: {
-							"Content-type": "application/json",
-							"X-CSRFToken": csrftoken,
-						},
-						body: JSON.stringify({
-							orderID: orderID,
-							transID: details.id,
-							payment_method: payment_method,
-							status: details.status,
-						}),
-					})
-				  .then((response) => response.json())
-				  .then((data) => {
-						window.location.href = redirect_url + '?order_number='+data.order_number+'&payment_id='+data.transID;
-					});
-				}
-        // alert('Transaction completed by ' + details.payer.name.given_name + '!');
-			});
-		}
+  document.getElementById("mpesa-pay-btn").addEventListener("click", function () {
+      initiateSTKPush();
+  });
 
+  function initiateSTKPush() {
+      fetch(stkPushUrl, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": csrftoken,
+          },
+          body: JSON.stringify({
+              orderID: orderID,
+              amount: amount,
+              phone: phone,
+          }),
+      })
+      .then(response => response.text())
+      .then(data => {
+          console.log("STK Push initiated:", data);
+          checkSTKPushStatus();
+      })
+      .catch(error => console.error("STK Push error:", error));
+  }
 
-	}).render('#paypal-button-container');
+  function checkSTKPushStatus() {
+      let interval = setInterval(() => {
+          fetch(checkStatusUrl, {
+              method: "GET",
+              headers: {
+                  "X-CSRFToken": csrftoken,
+              },
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log("STK Callback Response:", data);
+              let resultDesc = data.ResultDesc;
+              let transactionID = data.MpesaReceiptNumber;
+
+              if (resultDesc === "The service request is processed successfully.") {
+                  clearInterval(interval);
+                  alert("Payment successful!");
+                  sendData(transactionID);
+              } else if (resultDesc === "Request cancelled by user") {
+                  clearInterval(interval);
+                  alert("Request cancelled by user");
+              } else if (resultDesc === "DS timeout user cannot be reached") {
+                  clearInterval(interval);
+                  alert("DS timeout user cannot be reached");
+              }
+          })
+          .catch(error => console.error("Callback error:", error));
+      }, 5000);  // Check status every 5 seconds
+  }
+
+  function sendData(transactionID) {
+      fetch("{% url 'orders:payments' %}", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": csrftoken,
+          },
+          body: JSON.stringify({
+              orderID: orderID,
+              transID: transactionID,
+              payment_method: "Mpesa",
+              status: "Completed",
+          }),
+      })
+      .then(response => response.json())
+      .then(data => {
+          window.location.href = redirect_url + "?order_number=" + data.order_number + "&payment_id=" + data.transID;
+      })
+      .catch(error => console.error("Error saving payment:", error));
+  }
 </script>
-
-{% endblock content %}
+{% endblock %}

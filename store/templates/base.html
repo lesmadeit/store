@@ -8,6 +8,8 @@
     <title>{% block title %}E - STORE{% endblock title %}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
     <!-- favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/logo.jpg' %}">
 
@@ -72,7 +74,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="{% static 'js/vendor/modernizr-2.8.3.min.js' %}"></script>
 
-    <script src="https://www.paypal.com/sdk/js?client-id=ATDakGEFESlSq0xbOzxw0W-dZUWrKfiedaKAFHEk0QKfsUeeR_9j6G1A78TUmvFJuMvz3ArZroEobPHY&currency=USD"></script>
+    <!--<script src="https://www.paypal.com/sdk/js?client-id=ATDakGEFESlSq0xbOzxw0W-dZUWrKfiedaKAFHEk0QKfsUeeR_9j6G1A78TUmvFJuMvz3ArZroEobPHY&currency=USD"></script>-->
     
 </head>
 
@@ -144,6 +146,11 @@
                                 <i style="color:#FFFFFF" class="fa fa-search"></i>
                              </button>
                         </form>
+                        <!--<div class="logo">
+                            <a href="\">
+                                <img src="{% static 'img/logo.jpg' %}" alt="logo" style="max-width: 150px; height: auto;">
+                            </a>
+                        </div>-->
                     </div>
                 </div>
             </div>
@@ -152,7 +159,9 @@
             <div class="row">
                 <div class="col-sm-2">
                     <div class="logo">
-                        <a style="color:#0c0c0c;font-weight: 800;" href="\">E-STORE</a>
+                        <a href="\">
+                            <img src="{% static 'img/logo.jpg' %}" style="max-width: 150px; height: auto;">
+                        </a>
                     </div>
                 </div>
                 <div class="col-sm-8">

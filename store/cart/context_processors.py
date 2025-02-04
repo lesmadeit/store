@@ -1,3 +1,35 @@
+# from .models import Category
+# 
+# def category_list(request):
+#     return {
+#         'categories' : Category.objects.all(),
+#     }
+# 
+# from .models import Category
+# 
+# def menu_links(request):
+#     links = Category.objects.all()
+#     return dict(links=links)
+# 
+# 
+# from .models import Cart, CartItem
+# from .views import _cart_id
+# 
+# def counter(request):
+#     cart_count = 0
+#     if 'admin' in request.path:
+#         return {}
+#     else :
+#         try:
+#             cart = Cart.objects.filter(cart_id=_cart_id(request))
+#             cart_items = CartItem.objects.all().filter(cart=cart[:1])
+#             for cart_item in cart_items:
+#                 cart_count += cart_item.quantity
+#         except Cart.DoesNotExist:
+#             cart_count = 0
+#     return dict(cart_count=cart_count)
+
+
 from .models import Cart, CartItem
 from .views import _cart_id
 from django.core.exceptions import ObjectDoesNotExist
@@ -8,20 +40,21 @@ def cart_counter(request):
 
 
 def counter(request):
+
     cart_count = 0
-    
     total_price=0
     quantity=0
     cart_items=None
-    grand_total = 0
-    tax = 0
     cart_itemsss = None
 
     if 'admin' in request.path:
         return {}
     else :
         try:
-            
+            # cart = Cart.objects.filter(cart_id=_cart_id(request))
+            # cart_items = CartItem.objects.all().filter(cart=cart[:1])
+            # for cart_item in cart_items:
+            #     cart_count += cart_item.quantity
 
             
             try:
@@ -39,10 +72,6 @@ def counter(request):
             except ObjectDoesNotExist:
                 pass
             
-            tax = round(((2 * total_price)/100), 2)
-            grand_total = total_price + tax
-            handing = 500.00
-            total = float(grand_total) + handing
             
         except Cart.DoesNotExist:
             cart_count = 0

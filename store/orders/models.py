@@ -30,11 +30,11 @@ class Order(models.Model):
     last_name = models.CharField(max_length=50)
     phone = models.CharField(max_length=15)
     email = models.EmailField(max_length=50)
-    address = models.TextField(max_length=1000)
+    
     county = models.CharField(max_length=50)
     order_note = models.CharField(max_length=1000, blank=True)
     order_total = models.FloatField()
-    tax = models.FloatField()
+    
     status = models.CharField(max_length=10, choices=STATUS, default='New')
     ip = models.CharField(blank=True, max_length=20)
     is_ordered = models.BooleanField(default=False)
@@ -77,3 +77,51 @@ class OrderProduct(models.Model):
 
     def __str__(self):
         return self.product.name
+    
+
+class BaseModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+#M-pesa payment models
+
+class MPesaCalls(BaseModel):
+    ip_address = models.TextField()
+    caller = models.TextField()
+    conversation_id = models.TextField()
+    content = models.TextField()
+
+    class Meta:
+        verbose_name = "MpesaCall"
+        verbose_name_plural = 'Mpesa Calls'
+
+
+class MpesaCallBacks(BaseModel):
+    ip_address = models.TextField()
+    caller = models.TextField()
+    conversation_id = models.TextField()
+    content = models.TextField()
+
+    class Meta:
+        verbose_name = 'Mpesa Call Back'
+        verbose_name_plural = 'Mpesa Call Backs'
+
+
+class MpesaPayment(BaseModel):
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    description = models.TextField()
+    type = models.TextField()
+    reference = models.TextField()
+    first_name = models.CharField(max_length=100)
+    middle_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    phone_number = models.TextField()
+    organization_balance = models.DecimalField(max_digits=10, decimal_places=2)
+
+    class Meta:
+        verbose_name = 'Mpesa Payment'
+        verbose_name_plural = 'Mpesa Payments'

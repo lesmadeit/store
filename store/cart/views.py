@@ -162,6 +162,8 @@ def add_cart(request, product_id):
                 return redirect(redirect_url)
             elif reverse('shop:featured_products') in url_parts.path:
                 return redirect('shop:featured_products')
+            elif reverse('cart:cart') in url_parts.path:
+                return redirect('cart:cart')
         return redirect('shop:home')
         
 
@@ -198,9 +200,10 @@ def remove_cart_item(request, product_id, cart_item_id):
     cart_item.delete()
     return redirect('cart:cart')
 
+
+
 def cart(request, total_price=0, quantity=0, cart_items=None):
-    grand_total = 0
-    tax = 0
+    
 
     try:
         if request.user.is_authenticated:
@@ -216,18 +219,13 @@ def cart(request, total_price=0, quantity=0, cart_items=None):
         pass
     
     
-    tax = round(((2 * total_price)/100), 2)
-    grand_total = total_price + tax
-    handing = 500.00
-    total = float(grand_total) + handing
+    
 
     context = {
         'total' : total_price,
         'quantity': quantity,
         'cart_items':cart_items,
-        'order_total':total,
-        'vat' : tax,
-        'handing':handing,
+        
     }
 
     return render(request, 'shop/cart/cart.html', context)

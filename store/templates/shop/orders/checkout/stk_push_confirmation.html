@@ -1,0 +1,36 @@
+{% extends '../../../base.html' %}
+{% load static %}
+{% block title %}STK Push Confirmation{% endblock title %}
+{% block content %}
+<div class="pages-title section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="pages-title-text text-center">
+                    <h2 style="color:#0c0c0c">MPESA Payment Confirmation</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section style="margin-bottom:50;background:#ffffff" class="pages section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div style="text-align:center; padding:40px; border-radius:20px; background-color:#9c9696;">
+                    {% if success %}
+                    <h3 style="color: #1c1427;">Payment Successful!</h3>
+                    <p style="color: #0c0c0c;">Thank you for your payment. Your order has been successfully processed.</p>
+                    <a href="/" class="btn btn-success">Back to Home</a>
+                    {% else %}
+                    <h3 style="color: #1c1427;">Payment Failed!</h3>
+                    <p style="color: #0c0c0c;">Unfortunately, your payment could not be completed. Please try again.</p>
+                    <a href="{% url 'orders:checkout' %}" class="btn btn-danger">Try Again</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

@@ -99,7 +99,7 @@ def login(request):
                         variation = item.variation.all()
                         product_variation.append(list(variation))
 
-                    # Get the cart items from the user to access his product variations
+                    # Get the cart items from the user to access their product variations
                     cart_item = CartItem.objects.filter(user=user)
                     ex_var_list = []
                     id = []
