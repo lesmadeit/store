@@ -140,7 +140,7 @@
   var stkPushUrl = "https://ed03-154-159-252-172.ngrok-free.app/orders/online/lipa";
   var checkStatusUrl = "https://ed03-154-159-252-172.ngrok-free.app/orders/c2b/callback";
   var redirect_url = "{% url 'orders:order_complete' %}";
-
+  var checkout = '';
   document.getElementById("mpesa-pay-btn").addEventListener("click", function () {
       initiateSTKPush();
   });
@@ -161,6 +161,7 @@
       .then(response => response.text())
       .then(data => {
           console.log("STK Push initiated:", data);
+          ckeckout = data.CheckoutRequestID;
           checkSTKPushStatus();
       })
       .catch(error => console.error("STK Push error:", error));
@@ -169,10 +170,14 @@
   function checkSTKPushStatus() {
       let interval = setInterval(() => {
           fetch(checkStatusUrl, {
-              method: "GET",
+              method: "POST",
               headers: {
-                  "X-CSRFToken": csrftoken,
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken,
               },
+              body: JSON.stringify({
+                checkout:checkout,
+              }),
           })
           .then(response => response.json())
           .then(data => {
