@@ -281,7 +281,7 @@ def lipa_na_mpesa(request):
                 "PartyA": phone,
                 "PartyB": LipanaMpesaPassword.business_short_code,
                 "PhoneNumber": phone,
-                "CallBackURL": "https://ed03-154-159-252-172.ngrok-free.app/orders/c2b/callback",
+                "CallBackURL": "https://e639-154-159-252-172.ngrok-free.app/orders/query",
                 "AccountReference": "Leslie",
                 "TransactionDesc": "Testing stk push"
             }
@@ -299,35 +299,45 @@ def lipa_na_mpesa(request):
 
 
 
-
+@csrf_exempt
 def query_stk_push_status(request):
-    global checkout_request_id_global
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)  # Parse JSON request
+            checkout_request_id = data.get("checkout")  # Get checkout ID
 
-    if not checkout_request_id_global:
-        return HttpResponse("No CheckoutRequestID found. Please initiate a transaction first.")
+            if not checkout_request_id:
+                return HttpResponse("No CheckoutRequestID provided.", status=400)
 
-
-    access_token = MpesaAccessToken.validated_mpesa_access_token
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer %s" % access_token
-    }
+    
 
 
-    payload = {
-        "BusinessShortCode": LipanaMpesaPassword.business_short_code,
-        "Password": LipanaMpesaPassword.decode_password,
-        "Timestamp": LipanaMpesaPassword.timestamp,
-        "CheckoutRequestID": checkout_request_id_global,
-    }
+            access_token = MpesaAccessToken.validated_mpesa_access_token
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer %s" % access_token
+            }
 
-    api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"
-    response = requests.post(api_url, json=payload, headers=headers)
-    response_data = response.json()
 
-    print("Query Response:", response_data)
+            payload = {
+                "BusinessShortCode": LipanaMpesaPassword.business_short_code,
+                "Password": LipanaMpesaPassword.decode_password,
+                "Timestamp": LipanaMpesaPassword.timestamp,
+                "CheckoutRequestID": checkout_request_id,
+            }
 
-    return HttpResponse(json.dumps(response_data, indent=4), content_type="application/json")
+            api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"
+            response = requests.post(api_url, json=payload, headers=headers)
+            response_data = response.json()
+
+            print("Query Response:", response_data)
+
+            return HttpResponse(json.dumps(response_data, indent=4), content_type="application/json")
+        
+        except json.JSONDecodeError:
+            return HttpResponse("Invalid JSON format", status=400)
+    else:
+        return HttpResponse("Invalid request method", status=405)
 
 
 

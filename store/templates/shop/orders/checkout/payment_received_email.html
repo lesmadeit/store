@@ -137,9 +137,10 @@
   var orderID = "{{ order.order_number }}";
   var payment_method = "Mpesa";
   var phone = "{{ order.phone }}";
-  var stkPushUrl = "https://ed03-154-159-252-172.ngrok-free.app/orders/online/lipa";
-  var checkStatusUrl = "https://ed03-154-159-252-172.ngrok-free.app/orders/c2b/callback";
+  var stkPushUrl = "https://e639-154-159-252-172.ngrok-free.app/orders/online/lipa";
+  var checkStatusUrl = "https://e639-154-159-252-172.ngrok-free.app/orders/query";
   var redirect_url = "{% url 'orders:order_complete' %}";
+  var checkout = ""
 
   document.getElementById("mpesa-pay-btn").addEventListener("click", function () {
       initiateSTKPush();
@@ -150,7 +151,7 @@
           method: "POST",
           headers: {
               "Content-Type": "application/json",
-              "X-CSRFToken": csrftoken,
+              
           },
           body: JSON.stringify({
               orderID: orderID,
@@ -158,21 +159,36 @@
               phone: phone,
           }),
       })
-      .then(response => response.text())
+      .then(response => response.json())
       .then(data => {
           console.log("STK Push initiated:", data);
-          checkSTKPushStatus();
+          checkout = data.CheckoutRequestID
+          console.log("CheckoutRequestID set to:", checkout);
+
+          if (!checkout) {
+            console.error("CheckoutRequestID is not set!");
+          } else {
+
+            checkSTKPushStatus();
+          }
+
       })
       .catch(error => console.error("STK Push error:", error));
   }
 
   function checkSTKPushStatus() {
+      console.log(checkout)
       let interval = setInterval(() => {
-          fetch(checkStatusUrl, {
-              method: "GET",
+          fetch(checkStatusUrl + "/", {
+              method: "POST",
               headers: {
-                  "X-CSRFToken": csrftoken,
+                  
+                  "Content-Type": "application/json",
               },
+
+              body: JSON.stringify({
+                checkout: checkout
+              }),
           })
           .then(response => response.json())
           .then(data => {
@@ -193,7 +209,7 @@
               }
           })
           .catch(error => console.error("Callback error:", error));
-      }, 5000);  // Check status every 5 seconds
+      }, 20000);  // Check status every 5 seconds
   }
 
   function sendData(transactionID) {
