@@ -7,5 +7,5 @@ YOUR ORDER HAS BEEN RECIEVED
 Order Number : {{order.order_number}}
 
 <a href="{% url 'shop:home' %}" style="background:#f4cca4;color:#1c1427 " class="btn btn-warning"><i class="fas fa-angle-double-left"></i>&nbsp;&nbsp;  Back to Home</a>
-<a href="{% url 'orders:confirm' %}" style="background:#f4cca4;color:#1c1427 " class="btn btn-warning">Proceed to Payment</a>
+<a href="{% url 'orders:order_complete' %}" style="background:#f4cca4;color:#1c1427 " class="btn btn-warning">Proceed to Payment</a>
 {% endautoescape %}

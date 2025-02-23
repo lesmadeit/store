@@ -67,7 +67,7 @@
             <div class="log-title text-center">
               <h2><strong style="color:#d99879">Payment Method</strong></h2><br>
             </div>
-          <h3 style="font-size:15px; margin-left:30px" class="floatleft">Paypal</h3><br><br>
+          <h3 style="font-size:15px; margin-left:30px" class="floatleft">Mpesa</h3><br><br>
           </div>
         </div><br>
       </div>
@@ -137,8 +137,8 @@
   var orderID = "{{ order.order_number }}";
   var payment_method = "Mpesa";
   var phone = "{{ order.phone }}";
-  var stkPushUrl = "https://e639-154-159-252-172.ngrok-free.app/orders/online/lipa";
-  var checkStatusUrl = "https://e639-154-159-252-172.ngrok-free.app/orders/query";
+  var stkPushUrl = "https://5741-154-159-237-61.ngrok-free.app/orders/online/lipa";
+  var checkStatusUrl = "https://5741-154-159-237-61.ngrok-free.app/orders/query";
   var redirect_url = "{% url 'orders:order_complete' %}";
   var checkout = ""
 
@@ -165,6 +165,8 @@
           checkout = data.CheckoutRequestID
           console.log("CheckoutRequestID set to:", checkout);
 
+          alert("Confirmation prompt sent to your phone. Please enter your PIN to confirm the payment.");
+
           if (!checkout) {
             console.error("CheckoutRequestID is not set!");
           } else {
@@ -173,7 +175,10 @@
           }
 
       })
-      .catch(error => console.error("STK Push error:", error));
+      .catch(error => {
+        console.error("STK Push error:", error);
+        alert("An error occurred while initiating the payment. Please try again.");
+      });
   }
 
   function checkSTKPushStatus() {
@@ -194,12 +199,12 @@
           .then(data => {
               console.log("STK Callback Response:", data);
               let resultDesc = data.ResultDesc;
-              let transactionID = data.MpesaReceiptNumber;
+              let transactionID = checkout;
 
               if (resultDesc === "The service request is processed successfully.") {
                   clearInterval(interval);
                   alert("Payment successful!");
-                  sendData(transactionID);
+                  sendData(transactionID );//resultDesc
               } else if (resultDesc === "Request cancelled by user") {
                   clearInterval(interval);
                   alert("Request cancelled by user");
@@ -212,7 +217,7 @@
       }, 20000);  // Check status every 5 seconds
   }
 
-  function sendData(transactionID) {
+  function sendData(transactionID) {//resultDesc
       fetch("{% url 'orders:payments' %}", {
           method: "POST",
           headers: {
@@ -221,7 +226,7 @@
           },
           body: JSON.stringify({
               orderID: orderID,
-              transID: transactionID,
+              transID: transactionID,//resultDesc
               payment_method: "Mpesa",
               status: "Completed",
           }),

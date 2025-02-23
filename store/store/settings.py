@@ -28,7 +28,7 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['e639-154-159-252-172.ngrok-free.app', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['5741-154-159-237-61.ngrok-free.app', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -67,16 +67,16 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",  # Django frontend
-    "https://e639-154-159-252-172.ngrok-free.app",  # Ngrok backend
+    "https://5741-154-159-237-61.ngrok-free.app",  # Ngrok backend
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://localhost:8000',  # Optionally include localhost
-    'https://e639-154-159-252-172.ngrok-free.app'  # Your ngrok domain
+    'https://5741-154-159-237-61.ngrok-free.app'  # Your ngrok domain
 ]
 
-CSRF_COOKIE_DOMAIN = "https://e639-154-159-252-172.ngrok-free.app"
+CSRF_COOKIE_DOMAIN = "https://5741-154-159-237-61.ngrok-free.app"
 
 
 

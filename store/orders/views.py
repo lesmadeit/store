@@ -183,26 +183,7 @@ def payments(request):
     CartItem.objects.filter(user=request.user).delete()
 
 
-    # Send order recieved email to cutomer 
-    subject = 'Thank you for your order!'
-    message = render_to_string('shop/orders/checkout/order_completed.html', {
-        'user': request.user,
-        'order':order,
-    })
-    to_email = request.user.email
-    send_email = EmailMessage(subject, message, to=[to_email])
-    send_email.send()
-
     
-    # Send order recieved email to admin account 
-    subject = 'Thank you for your order!'
-    message = render_to_string('shop/orders/checkout/order_completed.html', {
-        'user': request.user,
-        'order':order,
-    })
-    to_email = request.user.email
-    send_email = EmailMessage(subject, message, to=['lesmwendwa@gmail.com'])
-    send_email.send()
 
     # Send order number and transaction id back to sendDate method via JavaResponse
     data = {
@@ -220,11 +201,14 @@ def order_completed(request):
         order = Order.objects.get(order_number=order_number, is_ordered=True)
         ordered_products = OrderProduct.objects.filter(order_id=order.id)
 
+
+        payment = Payment.objects.filter(payment_id=transID).latest('id')
+
         subtotall = 0
         for i in ordered_products:
             subtotall += i.product_price * i.quantity
         subtotal = round(subtotall, 2)
-        payment = Payment.objects.get(payment_id=transID)
+        
 
         context = {
             'order':order,
@@ -276,12 +260,12 @@ def lipa_na_mpesa(request):
                 "BusinessShortCode": LipanaMpesaPassword.business_short_code,
                 "Password": LipanaMpesaPassword.decode_password,
                 "Timestamp": LipanaMpesaPassword.timestamp,
-                "TransactionType": "CustomerBuyGoodsOnline", #CustomerBuyGoodsOnline(for buy goods)
+                "TransactionType": "CustomerPayBillOnline", #CustomerBuyGoodsOnline(for buy goods)
                 "Amount": amount,
                 "PartyA": phone,
                 "PartyB": LipanaMpesaPassword.business_short_code,
                 "PhoneNumber": phone,
-                "CallBackURL": "https://e639-154-159-252-172.ngrok-free.app/orders/query",
+                "CallBackURL": "https://5741-154-159-237-61.ngrok-free.app/orders/query",
                 "AccountReference": "Leslie",
                 "TransactionDesc": "Testing stk push"
             }
