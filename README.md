@@ -11,6 +11,7 @@ This is an ecommerce website made with Django and Bootstrap/Javascript
 - Admin area to manage customers, products & orders
 - Mark orders as a delivered option
 - Checkout process (shipping, payment method, etc... )
+- Mpesa payment integration after checkout(STK push)
 - Category Filter
 - Addition of variable products
 - About us page   
