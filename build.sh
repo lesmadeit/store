@@ -6,7 +6,7 @@ pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 
 
-cd estore
+cd store
 
 python manage.py collectstatic --no-input
 
