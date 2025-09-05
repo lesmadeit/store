@@ -10,7 +10,7 @@ services:
     name: bokxstore
     runtime: python
     buildCommand: './build.sh'
-    startCommand: 'cd store && python -m gunicorn store.wsgi:application --bind 0.0.0.0:$PORT' 
+    startCommand: 'cd store && python -m gunicorn wsgi:application --bind 0.0.0.0:$PORT' 
     #envVars:
     #- key: DATABASE_URL
     #fromDatabase:
