@@ -265,7 +265,7 @@ def lipa_na_mpesa(request):
                 "PartyA": phone,
                 "PartyB": LipanaMpesaPassword.business_short_code,
                 "PhoneNumber": phone,
-                "CallBackURL": "https://5741-154-159-237-61.ngrok-free.app/orders/query",
+                "CallBackURL": "https://8155579dab07.ngrok-free.app/orders/query/",
                 "AccountReference": "Leslie",
                 "TransactionDesc": "Testing stk push"
             }
@@ -282,49 +282,52 @@ def lipa_na_mpesa(request):
     return HttpResponse("Invalid request method", status=400)
 
 
-
+#call back that i used
 @csrf_exempt
 def query_stk_push_status(request):
+    print("Request URL:", request.get_full_path())
+    print("Request Body:", request.body)
     if request.method == "POST":
         try:
             data = json.loads(request.body)  # Parse JSON request
-            checkout_request_id = data.get("checkout")  # Get checkout ID
-
+            checkout_request_id = data.get("checkout")  # Frontend polling
             if not checkout_request_id:
+                # Check for M-Pesa callback format
+                if "Body" in data and "stkCallback" in data["Body"]:
+                    callback_data = data["Body"]["stkCallback"]
+                    print("M-Pesa Callback Data:", callback_data)
+                    # Process callback if needed (e.g., save to database)
+                    return HttpResponse("Callback received", status=200)
+                print("Error: No CheckoutRequestID provided in request body")
                 return HttpResponse("No CheckoutRequestID provided.", status=400)
-
-    
-
 
             access_token = MpesaAccessToken.validated_mpesa_access_token
             headers = {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer %s" % access_token
             }
-
-
             payload = {
                 "BusinessShortCode": LipanaMpesaPassword.business_short_code,
                 "Password": LipanaMpesaPassword.decode_password,
                 "Timestamp": LipanaMpesaPassword.timestamp,
                 "CheckoutRequestID": checkout_request_id,
             }
-
             api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"
             response = requests.post(api_url, json=payload, headers=headers)
+            print("M-Pesa API Response Status:", response.status_code)
+            print("M-Pesa API Response Text:", response.text)
             response_data = response.json()
-
             print("Query Response:", response_data)
-
             return HttpResponse(json.dumps(response_data, indent=4), content_type="application/json")
-        
-        except json.JSONDecodeError:
+        except json.JSONDecodeError as e:
+            print("JSON Decode Error:", str(e))
             return HttpResponse("Invalid JSON format", status=400)
+        except Exception as e:
+            print("Unexpected Error:", str(e))
+            return HttpResponse(f"Server error: {str(e)}", status=500)
     else:
+        print("Invalid request method:", request.method)
         return HttpResponse("Invalid request method", status=405)
-
-
-
 @csrf_exempt
 def register_urls(request):
     access_token = MpesaAccessToken.validated_mpesa_access_token

@@ -3,21 +3,7 @@
 {% block title %}Edit Profile{% endblock title %}
 {% block content %}
 
-<div  class="pages-title section-padding">
-    <div  class="container">
-        <div  style="background:#ffffff" class="row">
-            <div class="col-xs-12">
-                <div class="pages-title-text text-center">
-                    <h2 style="color:#0c0c0c">Edit Profile</h2>
-                    <ul class="text-left">
-                        <li><a style="color:#0c0c0c" href="\">Home </a></li>
-                        <li style="color:#0c0c0c"><span> // </span>Cart</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<br><br>
 <section style="background:#ffffff" class="section-conten padding-y bg">
     <br><br>
   
@@ -44,33 +30,33 @@
 					{% csrf_token %}
 					<div class="form-row">
 						<div class="form-group col-md-6">
-							<label style="color: #0c0c0c;">First Name</label>
+							<label style="color: #0c0c0c;">First Name:</label>
 							{{user_form.first_name}}
-						</div>
+						</div><br>
 						<div class="form-group col-md-6">
-							<label style="color: #0c0c0c;">Last Name</label>
+							<label style="color: #0c0c0c;">Last Name:</label>
 							{{user_form.last_name}}
-						</div>
+						</div><br>
 					</div>
 					<div class="form-row">
 						<div class="form-group col-md-6">
-							<label style="color: #0c0c0c;">Phone Number</label>
+							<label style="color: #0c0c0c;">Phone Number:</label>
 							{{user_form.Phone_number}}
-						</div>
+						</div><br>
 						<div class="form-group col-md-6">
-							<label style="color: #0c0c0c;">Profile Picture</label>
+							<label style="color: #0c0c0c;">Profile Picture:</label>
 							{{profile_form.profile_picture}}
-						</div>
+						</div><br>
 					</div>
 					<div style="margin-bottom:10px" class="col-md-6">
-						<label style="color: #0c0c0c;">Address</label>
+						<label style="color: #0c0c0c;">Address:</label>
 						{{profile_form.address}}
 					</div><br>
 					<div class="form-row">
 						<div class="form-group col-md-4">
-							<label style="color: #0c0c0c;">County</label>
+							<label style="color: #0c0c0c;">County:</label>
 							{{profile_form.county}}
-						</div>
+						</div><br>
 						
 						
 					</div>

@@ -23,18 +23,31 @@ from .forms import ContactForm
 
 def home(request):
     if request.user.is_authenticated and request.user.is_staff:
-        # Log the user out
         logout(request)
-        # Redirect to the login page 
         return redirect('accounts:login')
     
     products = Product.objects.all().filter(is_available=True)
-    featured_products = Product.objects.filter(featured=True)[:4]
+    featured_products = Product.objects.filter(featured=True, is_available=True)
+    new_products = Product.objects.filter(new=True, is_available=True)  # Added for new arrivals
+    
+    # Paginate featured products (4 per page)
+    featured_paginator = Paginator(featured_products, 4)
+    featured_page = request.GET.get('featured_page')
+    paged_featured_products = featured_paginator.get_page(featured_page)
+    featured_products_count = featured_products.count()
+    
+    # Paginate new arrival products (4 per page)
+    new_paginator = Paginator(new_products, 4)
+    new_page = request.GET.get('new_page')  # Separate query param for new arrivals
+    paged_new_products = new_paginator.get_page(new_page)
+    new_products_count = new_products.count()
     
     context = {
-        'products' : products,
-        'featured_products': featured_products,
-
+        'products': products,
+        'featured_products': paged_featured_products,
+        'featured_products_count': featured_products_count,
+        'new_products': paged_new_products,  # Added for new arrivals
+        'new_products_count': new_products_count,  # Added for new arrivals
     }
     return render(request, 'shop/index.html', context)
 
@@ -45,34 +58,32 @@ def shop(request, category_slug=None):
         logout(request)
         # Redirect to the login page or any other page
         return redirect('accounts:login')
+    
     categories = None
     products = None
-    
+    featured_products = Product.objects.filter(featured=True, is_available=True).order_by('-id')[:3]  # Added for featured products
 
-    if category_slug != None:
+    if category_slug:
         categories = get_object_or_404(Category, slug=category_slug)
         products = Product.objects.filter(category=categories, is_available=True)
-        paginator = Paginator(products, 6)
-        page = request.GET.get('page')
-        paged_products = paginator.get_page(page)
-        products_count = products.count()
-        
     else:
-        products = Product.objects.all().filter(is_available=True)
-        paginator = Paginator(products, 6)
-        page = request.GET.get('page')
-        paged_products = paginator.get_page(page)
-        products_count = products.count()
-        
+        products = Product.objects.filter(is_available=True)
     
+    paginator = Paginator(products, 6)
+    page = request.GET.get('page')
+    paged_products = paginator.get_page(page)
+    products_count = products.count()
+    
+    # Note: The loop below seems incomplete or unnecessary as it doesn't store the reviews.
+    # Consider revising if reviews are needed in the template.
     for product in products:
         reviews = ReviewRating.objects.order_by('-updated_at').filter(product_id=product.id, status=True)
 
     context = {
         'category_slug': category_slug,
-        'products' : paged_products,
+        'products': paged_products,
         'products_count': products_count,
-        
+        'featured_products': featured_products,  # Added to context
     }
     return render(request, 'shop/shop/shop.html', context)
 
@@ -96,7 +107,7 @@ def contact_us(request):
                 'lesliemwendwa10@gmail.com', #To avoid SMTP issues
                 ['lesliemwendwa10@gmail.com'],  # To (your email)
             )
-            messages.success(request, 'Your message has been sent successfully!')
+            messages.success(request, 'Your message has been sent successfully. We will be in touch')
             return redirect('shop:contact_us')  
     else:
         form = ContactForm()
@@ -104,10 +115,11 @@ def contact_us(request):
     return render(request, 'shop/shop/contact_us.html', {'form': form})
 
 
+
+
 def product_details(request, category_slug, product_details_slug):
     try:
         single_product = Product.objects.get(category__slug=category_slug, slug=product_details_slug)
-        
         in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request), product=single_product).exists()
     except Exception as e:
         return e
@@ -122,19 +134,34 @@ def product_details(request, category_slug, product_details_slug):
 
     reviews = ReviewRating.objects.order_by('-updated_at').filter(product_id=single_product.id, status=True)
     product_gallery = ProductGallery.objects.filter(product_id=single_product.id)
-
+    related_products = Product.objects.filter(category=single_product.category, is_available=True).exclude(id=single_product.id)[:5]
+    categories = Category.objects.all()
+    # Compute category counts
+    category_counts = {category.id: category.product_set.filter(is_available=True).count() for category in categories}
+    
     context = {
         'single_product': single_product,
         'in_cart': in_cart,
-        'orderproduct':orderproduct,
+        'orderproduct': orderproduct,
         'reviews': reviews,
-        'product_gallery':product_gallery,
+        'product_gallery': product_gallery,
+        'related_products': related_products,
+        'categories': categories,
+        'category_counts': category_counts,  # Added for category counts
+        'featured_products': Product.objects.filter(featured=True, is_available=True)[:4],
     }
     return render(request, 'shop/shop/product_details.html', context)
 
 def featured_products(request):
-    products = Product.objects.filter(featured=True)
-    return render(request, 'shop/shop/featured_products.html', {'products': products})
+    products = Product.objects.filter(featured=True, is_available=True)
+    paginator = Paginator(products, 4)  # 4 products per page to match homepage
+    page = request.GET.get('featured_page')  # Match homepage's query param
+    paged_products = paginator.get_page(page)
+    products_count = products.count()
+    return render(request, 'shop/shop/featured_products.html', {
+        'products': paged_products,
+        'products_count': products_count,
+    })
 
 
 def search(request):
@@ -164,7 +191,7 @@ def review(request, product_id):
             reviews = ReviewRating.objects.get(user__id=request.user.id,product__id=product_id)
             form = ReviewForm(request.POST, instance=reviews)
             form.save()
-            messages.success(request, 'Thank you, your review updated!')
+            messages.success(request, 'Thank you, your review has been updated!')
             return redirect(url)
         except ReviewRating.DoesNotExist:
             form = ReviewForm(request.POST)

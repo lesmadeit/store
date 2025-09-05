@@ -61,7 +61,7 @@ def register(request):
             send_email = EmailMessage(subject, message, to=[to_email])
             send_email.send()
 
-            messages.success(request, 'Check Gmail To Active Your Account')
+            messages.success(request, 'Check Your Email To Activate Your Account')
             return redirect('/account/register/?command=verification&email='+email)
         
 
@@ -168,7 +168,7 @@ def activate(request, uidb64, token):
 
 @login_required(login_url= 'accounts:login')
 def dashboard(request):
-    orders = Order.objects.order_by('-created_at')
+    orders = Order.objects.filter(user=request.user, is_ordered=True).order_by('-created_at')
     profile = UserProfile.objects.get(user_id=request.user.id)
 
     orders_count = orders.count()

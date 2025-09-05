@@ -90,6 +90,8 @@ def add_cart(request, product_id):
                 return redirect(redirect_url)
             elif reverse('shop:featured_products') in url_parts.path:
                 return redirect('shop:featured_products')
+            elif reverse('cart:cart') in url_parts.path:
+                return redirect('cart:cart')
         return redirect('shop:home')
 
         

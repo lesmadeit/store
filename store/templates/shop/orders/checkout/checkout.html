@@ -2,89 +2,129 @@
 {% load static %}
 {% block title %}Checkout{% endblock title %}
 {% block content %}
-<!-- pages-title-start -->
-<div class="pages-title section-padding">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="pages-title-text text-center">
-                    <h2 style="color:#0c0c0c">Checkout</h2>
-                    <ul class="text-left">
-                        <li><a style="color:#0c0c0c" href="\">Home </a></li>
-                        <li style="color:#0c0c0c"><span> // </span>Checkout</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% include "includes/alerts.html" %}
-<!-- pages-title-end -->
-<!-- Checkout content section start -->
-<section style="margin-bottom:50;background:#ffffff" class="pages checkout section-padding">
-    <div class="container">
-        <div class="row">
+<style>
+    /* Ensure form inputs match Bootstrap's form-control styling */
+    .custom-input-field {
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 10px;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    /* Focus state for inputs */
+    .custom-input-field:focus {
+        color: #495057;
+        background-color: #fff;
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    /* Style for textarea to match input fields */
+    .custom-input-field[rows="2"] {
+        min-height: 80px; /* Adjust height for smaller textarea */
+        resize: vertical; /* Allow vertical resizing only */
+    }
+
+    /* Ensure form labels are consistent */
+    .form-label {
+        font-weight: 500;
+        color: #333;
+    }
+
+    /* Style for required field indicator */
+    .form-label sup {
+        color: #dc3545; /* Bootstrap's danger color for required asterisk */
+        font-size: 0.9em;
+    }
+
+    /* Adjust form-item spacing */
+    .form-item {
+        margin-bottom: 0rem;
+    }
+
+    /* Style form errors */
+    .text-danger {
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+}
+</style>
+<!-- Checkout Page Start -->
+<div class="container-fluid bg-light overflow-hidden py-5">
+    <div class="container py-5">
+        <h1 class="mb-4 wow fadeInUp" data-wow-delay="0.1s">Billing Details</h1>
+        {% include "includes/alerts.html" %}
         <form action="{% url 'orders:payment' %}" method="post">
-        {% csrf_token %}
-        <div class="col-sm-6">
-            <div style="border-radius:20px; background-color: #9c9696;" class="main-input single-cart-form padding60">
-                <div class="log-title text-center">
-                    <h3><strong style="color:#0c0c0c">Billing Address</strong></h3>
-                </div>
-                <div class="custom-input">
-                    {% for field in form %}
-                    <div>
-                        {{ field.label_tag}}
-                        {{ field }}
-                        {% if field.errors %}
-                        <div class="text-danger">
-                            {{ field.errors.0 }}  <!-- Display first error -->
+            {% csrf_token %}
+            <div class="row g-5">
+                <div class="col-md-12 col-lg-6 col-xl-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="custom-input">
+                        {% for field in form %}
+                        <div class="form-item w-100">
+                            <label class="form-label my-3">
+                                {{ field.label }}
+                                {% if field.field.required %}<sup>*</sup>{% endif %}
+                            </label>
+                            {{ field }}
+                            {% if field.errors %}
+                            <div class="text-danger">
+                                {{ field.errors.0 }}
+                            </div>
+                            {% endif %}
                         </div>
-                        {% endif %}
+                        {% endfor %}
+                        
+                        
                     </div>
-                    {% endfor %}  <!-- Render form dynamically -->
                 </div>
-            </div><br>
-        </div>
-            <div class="col-xs-12 col-sm-6">
-                <div style="border-radius:10px; background-color: #9c9696;" class="padding60">
+                <div class="col-md-12 col-lg-6 col-xl-6 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="log-title text-center">
-                        <h3><strong style="color:#0c0c0c">Your order</strong></h3>
+                        <h3><strong>Your Order</strong></h3>
                     </div>
-                    <div class="cart-form-text pay-details table-responsive">
-                        <table>
+                    <div class="table-responsive">
+                        <table class="table">
                             <thead>
-                                <tr  >
-                                    <th style="color:#ffffff;background:#1c1427;border-radius:10px 0 0 10px;">Product</th>
-                                    <td style="color:#ffffff;background:#1c1427;border-radius:0 10px 10px 0;">Total</td>
+                                <tr class="text-center">
+                                    <th scope="col" class="text-start">Product</th>
+                                    <th scope="col">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for cart_item in cart_items %}
-                                <tr>
-                                    <th style="color: #ffffff;">{{cart_item.product.name}} x {{cart_item.quantity}}</th>
-                                    <td style="color: #ffffff;">Ksh {{cart_item.sub_total}}</td>
+                                <tr class="text-center">
+                                    <th scope="row" class="text-start py-4">
+                                        {{ cart_item.product.name }} x {{ cart_item.quantity }}
+                                    </th>
+                                    <td class="py-4">Ksh {{ cart_item.sub_total }}</td>
                                 </tr>
                                 {% endfor %}
-                             
-                                <tr style="color:#0c0c0c">
-                                    <th>Order total</th>
-                                    <td>Ksh {{total_price}}</td>
+                                <tr class="text-center">
+                                    <th scope="row" class="text-start py-4">
+                                        <p class="mb-0 text-dark text-uppercase py-2">ORDER TOTAL</p>
+                                    </th>
+                                    <td class="py-4">
+                                        <div class="py-2 text-center border-bottom border-top">
+                                            <p class="mb-0 text-dark">Ksh {{ total_price }}</p>
+                                        </div>
+                                    </td>
                                 </tr>
                             </tbody>
-                            <tfoot>
-                                
-                            </tfoot>
-                            
                         </table>
-                        <div  style="width:100%" class="submit-text">
-                        <button href="#" class="btn btn-warning" style="background:#f4cca4;color:#1c1427; width:100% ; text-transform: capitalize;font-size:18px"><b>Place Order</b></button>
-                        </div>
+                    </div>
+                    <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                        <button type="submit" class="btn btn-primary border-secondary py-3 px-4 text-uppercase w-100 text-primary">Place Order</button>
                     </div>
                 </div>
             </div>
         </form>
-        </div>
     </div>
-</section>
+</div>
+<!-- Checkout Page End -->
 {% endblock content %}

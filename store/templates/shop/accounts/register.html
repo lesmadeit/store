@@ -34,19 +34,17 @@
 			{% if request.GET.command == 'verification' %}
 			<div style="width:70%;background:#1c1427" class="alert alert-warning text-center" role="alert">
 			<br>
-			<b><p style="font-size:25px;color:#f4cca4">Check Gmail To Active Your Account</p></b></b><br><br><br>
+			<b><p style="font-size:25px;color:#f4cca4">Check Your Email To Activate Your Account</p></b></b><br><br><br>
 			<a class="btn btn-warning"  style="font-size:20px; background:#f4cca4;color:#1c1427;width:250px" href="{% url 'shop:home' %}">Back to home</a><br><br>
 			
 			</div>
 			<br>
 			{% else %}
-			<div style="width:39%;background:#1c1427" class="wrap-login100">
+			<div style="width:500px;background:#00272b" class="wrap-login100">
 				<form class="login100-form validate-form" action="{% url 'accounts:register' %}" method="POST">
 					{% csrf_token %}
 					
-					<span style="color:#ffffff;font-weight: 800;"  class="login100-form-title p-b-48">
-						<span style="color:#ffffff">E -</span> S H O P
-					</span>
+					
 					<span style="color:#ffffff" class="login100-form-title p-b-26">
 						Register
 					</span>
@@ -73,22 +71,22 @@
 					<div class="wrap-input100 validate-input">
 						<!--<input class="input100" type="text" name="first_name">-->
 						{{forms.first_name}}
-						<span class="focus-input100" data-placeholder="First Name"></span>
+						<span class="focus-input100" data-placeholder="First Name:"></span>
 					</div>
 					<div class="wrap-input100 validate-input">
 						<!-- <input class="input100" type="text" name="last_name"> -->
 						{{forms.last_name}}
-						<span class="focus-input100" data-placeholder="Last Name"></span>
+						<span class="focus-input100" data-placeholder="Last Name:"></span>
 					</div>
 					<div class="wrap-input100 validate-input">
 						<!--<input class="input100" type="text" name="Phone_number">-->
 						{{forms.Phone_number}}
-						<span class="focus-input100" data-placeholder="Phone"></span>
+						<span class="focus-input100" data-placeholder="Phone:"></span>
 					</div>
 					<div class="wrap-input100 validate-input">
 						<!--<input class="input100" type="text" name="email">-->
 						{{forms.email}}
-						<span class="focus-input100" data-placeholder="Email"></span>
+						<span class="focus-input100" data-placeholder="Email:"></span>
 					</div>
 
 					<div class="wrap-input100 validate-input">
@@ -97,7 +95,7 @@
 						</span>
 						<!--<input class="input100" type="password" name="password">-->
 						{{forms.password}}
-						<span class="focus-input100" data-placeholder="Password"></span>
+						<span class="focus-input100" data-placeholder="Password:"></span>
 					</div>
 
 					<div class="wrap-input100 validate-input">
@@ -106,19 +104,19 @@
 						</span>
 						<!--<input class="input100" type="password" name="confirm-password">-->
 						{{ forms.repeat_password }}
-						<span class="focus-input100" data-placeholder="Confirm Password"></span>
+						<span class="focus-input100" data-placeholder="Confirm Password:"></span>
 					</div>
                     
 					<div class="container-login100-form-btn">
 						<div class="wrap-login100-form-btn">
 							<div class="login100-form-bgbtn"></div>
 							<button class="login100-form-btn">
-								Login
+								Register
 							</button>
 						</div>
 					</div>
                     
-                    <br><br><br>
+                    <br>
                     <span style="font-size:17px" class="txt1">
                         Have an account?
                     </span>
@@ -128,8 +126,8 @@
                     </a>
                     
 
-                    <br><br><hr>
-                    <a href="{% url 'shop:home' %}" style="background:#ffffff; color:#1c1427 " class="btn btn-warning"><i class="fas fa-angle-double-left"></i>&nbsp;&nbsp;  Back to Home</a>
+                    <hr>
+                    <a href="{% url 'shop:home' %}" style="background:#4A8E9A; color:#FFFFFF" class="btn"><i class="fas fa-angle-double-left"></i>&nbsp;&nbsp; Back to Home</a>
                     <!--
                     
 					<div class="text-center p-t-115">

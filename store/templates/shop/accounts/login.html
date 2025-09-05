@@ -4,7 +4,7 @@
     <title>Login</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/logo2.jpg' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'log/vendor/bootstrap/css/bootstrap.min.css' %}">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{% static 'log/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
@@ -30,20 +30,17 @@
 <body >
     <div  class="limiter">
         <div  style="background:#ffffff" class="container-login100">
-            <div style="width:39%;background:#1c1427" class="wrap-login100">
+            <div style="width:500px;background:#00272b" class="wrap-login100">
                 <form class="login100-form validate-form" action="{% url 'accounts:login' %}" method="POST">
                     {% csrf_token %}
-                    <span style="color:#f4cca4;font-weight: 800;"  class="login100-form-title p-b-48">
-                        <span style="color:#d99879">E - S H O P</span>
-                    </span>
-                    <span style="color:#f4cca4" class="login100-form-title p-b-26">
+                    <span style="color:#ffffff" class="login100-form-title p-b-26">
                         Login
                     </span>
                     {% include "includes/alerts.html" %}
                     <br>
                     <div class="wrap-input100 validate-input">
                         <input class="input100" type="text" name="email">
-                        <span class="focus-input100" data-placeholder="Email"></span>
+                        <span class="focus-input100" data-placeholder="Email:"></span>
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Enter password">
@@ -51,7 +48,7 @@
                             <i class="zmdi zmdi-eye"></i>
                         </span>
                         <input class="input100" type="password" name="password">
-                        <span class="focus-input100" data-placeholder="Password"></span>
+                        <span class="focus-input100" data-placeholder="Password:"></span>
                     </div>
 
                     <div class="container-login100-form-btn">
@@ -68,17 +65,17 @@
                         Don’t have an account?
                     </span>
 
-                    <a style="font-size:17px; color:#d99879" class="txt2" href="{% url 'accounts:register' %}">
+                    <a style="font-size:17px; color:#ffffff" class="txt2" href="{% url 'accounts:register' %}">
                         Sign Up
                     </a>
                     <br><hr>
 
-                    <a style="font-size:17px; color:#d99879" class="txt2" href="{% url 'accounts:forgot_password' %}">
+                    <a style="font-size:17px; color:#ffffff" class="txt2" href="{% url 'accounts:forgot_password' %}">
                         Forgot Password?
                     </a>
 
-                    <br><br><hr>
-                    <a href="{% url 'shop:home' %}" style="background:#f4cca4;color:#1c1427 " class="btn btn-warning"><i class="fas fa-angle-double-left"></i>&nbsp;&nbsp;  Back to Home</a>
+                    <br><hr>
+                    <a href="{% url 'shop:home' %}" style="background:#4A8E9A; color:#FFFFFF" class="btn"><i class="fas fa-angle-double-left"></i>&nbsp;&nbsp; Back to Home</a>
                     <!--
                     
 					<div class="text-center p-t-115">

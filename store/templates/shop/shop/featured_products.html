@@ -1,56 +1,96 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Featured{% endblock %}
+{% block title %}Featured Products{% endblock %}
 {% block content %}
-
-<body>
-    <!-- featured-products section start -->
-<section style="background-color: #ffffff" class="single-products  products-two section-padding extra-padding-bottom">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="section-title text-center">
-                    <h2 style="color: #0c0c0c;">Featured Products</h2>
+<!-- Featured Products Section Start -->
+<div class="container-fluid product py-5">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h1>Featured Products</h1>
+            </div>
+            <div class="col-12">
+                <div class="text-end mb-4">
+                    <span class="text-primary fs-5">{{ products_count }} Featured Products</span>
                 </div>
             </div>
-        </div>
-        <div class="wrapper">
-            <ul class="load-list load-list-one">
-                <li>
-                    <div class="row text-center">
-                        {% for product in products %}
-                        <div class="col-xs-12 col-sm-6 col-md-3">
-                            <div class="single-product" style="border-radius: 15px; overflow: hidden;">
-                                <div class="product-img" >
-                                    <div class="pro-type"></div>
-                                    <a href="#"><img style="width:100%; height:350px" src="{{ product.image.url }}" alt="Product Title" /></a>
-                                    <div class="actions-btn">
-                                        <a href="{% url 'cart:add_cart' product.id %}"><i class="mdi mdi-cart"></i></a>
-                                        <a href="{{product.get_product_details_url}}"><i class="mdi mdi-eye"></i></a>
-                                        
-                                    </div>
+            <div class="col-12">
+                <div class="row g-4">
+                    {% for product in products %}
+                    <div class="col-md-6 col-lg-4 col-xl-3" style="max-width: 300px; height: auto;">
+                        <div class="product-item rounded wow fadeInUp" data-wow-delay="0.{{ forloop.counter|add:1 }}s">
+                            <div class="product-item-inner border rounded">
+                                <div class="product-item-inner-item">
+                                    <a href="{{ product.get_product_details_url }}">
+                                        <img src="{{ product.image.url }}" class="img-fluid w-100 rounded-top" alt="{{ product.name }}">
+                                    </a>
+                                    {% if product.new %}
+                                    <div class="product-new">New</div>
+                                    {% elif product.discount != 0 %}
+                                    <div class="product-sale">Sale</div>
+                                    {% endif %}
+                                    
                                 </div>
-                                <div style="background-color: #034d15;"class="product-dsc">
-                                    <p><a style="color: #f4cca4;" href="#">{{ product.name }}</a></p>
-                                    <span style="color: #f4cca4;">Ksh {{ product.price }}</span>
+                                <div class="text-center rounded-bottom p-4">
+                                    <a href="{{ product.get_product_details_url }}" class="d-block mb-2">{{ product.category.name|default:"Product" }}</a>
+                                    <a href="{{ product.get_product_details_url }}" class="d-block h4">{{ product.name }}</a>
+                                    {% if product.discount != 0 %}
+                                    <del class="me-2 fs-5">Ksh {{ product.discount }}</del>
+                                    {% endif %}
+                                    <span class="text-primary fs-5">Ksh {{ product.price }}</span>
+                                </div>
+                            </div>
+                            <div class="product-item-add border border-top-0 rounded-bottom text-center p-4 pt-0">
+                                <a href="{% url 'cart:add_cart' product.id %}" class="btn btn-primary border-secondary rounded-pill py-2 px-4 mb-4">
+                                    <i class="fas fa-shopping-cart me-2"></i> Add To Cart
+                                </a>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex">
+                                        {% for i in "12345" %}
+                                        <i class="fas fa-star {% if i|add:0 <= product.averageRating|default:0 %}text-primary{% else %}text-muted{% endif %}"></i>
+                                        {% endfor %}
+                                        <span class="ms-2">({{ product.countReview|default:0 }} reviews)</span>
+                                    </div>
+                                    <div class="d-flex">
+                                        <a href="#" class="text-primary d-flex align-items-center justify-content-center me-3">
+                                            <span class="rounded-circle btn-sm-square border"><i class="fas fa-random"></i></span>
+                                        </a>
+                                        <a href="#" class="text-primary d-flex align-items-center justify-content-center me-0">
+                                            <span class="rounded-circle btn-sm-square border"><i class="fas fa-heart"></i></span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        {% empty %}
-                        <p>No featured products available</p>
-                        {% endfor %}
-                        
                     </div>
-                </li>
-            </ul><br>
-            
+                    {% empty %}
+                    <div class="col-12 text-center">
+                        <p>No featured products available</p>
+                    </div>
+                    {% endfor %}
+                    <div class="col-12 wow fadeInUp" data-wow-delay="0.1s">
+                        {% if products.has_other_pages %}
+                        <div class="pagination d-flex justify-content-center mt-5">
+                            {% if products.has_previous %}
+                            <a href="?featured_page={{ products.previous_page_number }}" class="rounded">&laquo;</a>
+                            {% else %}
+                            <a href="#" class="rounded disabled">&laquo;</a>
+                            {% endif %}
+                            {% for x in products.paginator.page_range %}
+                            <a href="?featured_page={{ x }}" class="{% if products.number == x %}active {% endif %}rounded">{{ x }}</a>
+                            {% endfor %}
+                            {% if products.has_next %}
+                            <a href="?featured_page={{ products.next_page_number }}" class="rounded">&raquo;</a>
+                            {% else %}
+                            <a href="#" class="rounded disabled">&raquo;</a>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</section><br><br>
-<!-- featured-products section end -->
-</body>
-
+</div>
+<!-- Featured Products Section End -->
 {% endblock content %}
-
-
-

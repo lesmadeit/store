@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
 
 load_dotenv()
 
@@ -26,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['5741-154-159-237-61.ngrok-free.app', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -48,11 +49,16 @@ INSTALLED_APPS = [
 
     'corsheaders',
 
+
+    'cloudinary',
+    'cloudinary_storage',
+
     
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -67,16 +73,17 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",  # Django frontend
-    "https://5741-154-159-237-61.ngrok-free.app",  # Ngrok backend
+    "https://8155579dab07.ngrok-free.app",  # Ngrok backend
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://localhost:8000',  # Optionally include localhost
-    'https://5741-154-159-237-61.ngrok-free.app'  # Your ngrok domain
+    'https://8155579dab07.ngrok-free.app'  # Your ngrok domain
 ]
 
-CSRF_COOKIE_DOMAIN = "https://5741-154-159-237-61.ngrok-free.app"
+CSRF_COOKIE_DOMAIN = "https://8155579dab07.ngrok-free.app"
+
 
 
 
@@ -93,6 +100,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.csrf',
 
                 'shop.context_processors.category_list',
                 'cart.context_processors.counter',
@@ -109,17 +117,21 @@ AUTH_USER_MODEL = 'accounts.Account'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
+DATABASE_URL = os.getenv('DATABASE_URL')
 DATABASES = {
+    'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
+}
+
+'''DATABASES = {
      'default': {
          'ENGINE': 'django.db.backends.postgresql',
          'NAME': 'store',
          'USER' : 'postgres',
-         'PASSWORD' : 'lesmadeit',
+         'PASSWORD' : 'hourglass84',
          'HOST' : 'localhost',
          'PORT' : '5432',
      }
- }
+ }'''
 
 #DATABASES = {
 #    'default': {
@@ -174,10 +186,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
 STATICFILES_DIRS = [BASE_DIR / 'store/static']
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# MEDIA
+
+
+
+'''# MEDIA
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / 'media' '''
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'CLOUDINARY_API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+}
 
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {

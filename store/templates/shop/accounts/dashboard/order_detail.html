@@ -9,11 +9,11 @@
 </div>
 
 <div class="container"
-  style="margin: 0 auto;width: 50%;padding: 50px;background: #1c1427;margin-top: 50px;margin-bottom: 50px;">
+  style="margin: 0 auto; width: 50%; padding: 50px; background: #ffffff; margin-top: 50px; margin-bottom: 50px; border: 1px solid #333; border-radius: 10px;">
   <div  class="row invoice row-printable">
     <div  class="col-md-12">
       <!-- col-lg-12 start here -->
-      <div style="background:#1c1427" class="panel panel-default plain" id="dash_0">
+      <div style="background:#ffffff" class="panel panel-default plain" id="dash_0">
         <!-- Start .panel -->
         <div class="panel-body p30">
           <div class="row">
@@ -28,25 +28,27 @@
               <!-- col-lg-6 start here -->
               <div class="invoice-from  ">
                 <ul class="list-unstyled floatright">
-                  <li style="color:#d99879"><strong>Invoiced To</strong></li><br>
-                  <li>{{order.full_name}}</li><br>
-                  <li>{{order.address}}</li><br>
-                  <li>{{order.county}}</li><br>
+                  <li style="color:#333"><strong>Invoiced To</strong></li><br>
+                  <li style="color:#333">{{order.full_name}}</li>
+                  <li style="color:#333">{{order.email}}</li>
+                  <li style="color:#333">{{order.phone}}</li>
+                  <li style="color:#333">{{order.county}}</li>
                   
                 </ul>
               </div>
             </div>
             <!-- col-lg-6 end here -->
+             <hr style="border-top: 1px solid #333; margin: 20px 0;">
             <div class="col-lg-12">
             <br>
               <!-- col-lg-12 start here -->
               <div style="font-size:16px">
-                <div style="background:#40394a" class="well">
+                <div style="background:#ffffff" class="well">
                   <ul  style="margin:auto">
-                    <li><strong><span >Order :</span></strong>&nbsp; {{order.order_number}}</li><br>
-                    <li><strong><span >Transaction ID :</span></strong>&nbsp; {{order.payment.payment_id}}</li><br>
-                    <li><strong><span >Order Date :</span></strong>&nbsp; {{order.order_created}}</li><br>
-                    <li><strong><span >Status :</span></strong>&nbsp; {{order.payment.status}}</li><br>
+                    <li style="color:#333"><strong><span >Order :</span></strong>&nbsp; {{order.order_number}}</li><br>
+                    <li style="color:#333"><strong><span >Transaction ID :</span></strong>&nbsp; {{order.payment.payment_id}}</li><br>
+                    <li style="color:#333"><strong><span >Order Date :</span></strong>&nbsp; {{order.order_created}}</li><br>
+                    <li style="color:#333"><strong><span >Status :</span></strong>&nbsp; {{order.payment.status}}</li><br>
                   </ul>
                 </div>
               </div>
@@ -102,7 +104,7 @@
                 </div>
               </div>
               <div class="invoice-footer mt25">
-                <p style="color:#d99879" class="text-center">Thank you for shopping with us!</p>
+                <p style="color:#333" class="text-center">Thank you for shopping with us!</p>
               </div>
             </div>
             <!-- col-lg-12 end here -->

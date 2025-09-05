@@ -2,112 +2,236 @@
 {% load static %}
 {% block title %}Payment{% endblock title %}
 {% block content %}
+<style>
+  /* General section styling */
+  .section-padding {
+    padding: 50px 0;
+  }
+
+  /* Dark background for payment section */
+  .bg-dark {
+    background-color: #1c1427;
+    color: #fff;
+  }
+
+  /* Card panel for billing and order sections */
+  .card-panel {
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Padding for card panels */
+  .padding60 {
+    padding: 30px;
+  }
+
+  /* Accent colors for titles and links */
+  .title-accent {
+    color: #f4cca4;
+  }
+
+  .link-accent {
+    color: #d99879;
+    text-decoration: none;
+  }
+
+  .link-accent:hover {
+    color: #f4cca4;
+  }
+
+  .text-accent {
+    color: #d99879;
+  }
+
+  /* Table styling for billing address */
+  .payment-table {
+    width: 100%;
+    font-size: 15px;
+    border-collapse: collapse;
+  }
+
+  .payment-table th,
+  .payment-table td {
+    padding: 10px;
+    text-align: left;
+  }
+
+  .payment-table th {
+    font-weight: 600;
+    color: #333;
+  }
+
+  .payment-table td {
+    color: #555;
+  }
+
+  /* Add black borders between rows */
+  .payment-table tbody tr {
+    border-bottom: 1px solid #000;
+    /* Black border between rows */
+  }
+
+  .payment-table tbody tr:last-child {
+    border-bottom: none;
+    /* Remove border from last row */
+  }
+
+  /* Table styling for order details */
+  .order-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .order-table thead th {
+    background-color: #ffffff;
+    color: #f4cca4;
+    padding: 12px;
+    font-weight: 600;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .order-table tbody th,
+  .order-table tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #000;
+    /* Changed from #dee2e6 to black */
+  }
+
+  .order-table tbody th {
+    font-weight: 600;
+    color: #333;
+  }
+
+  .order-table tbody td {
+    color: #555;
+  }
+
+  .order-table tbody tr:last-child th,
+  .order-table tbody tr:last-child td {
+    color: #d99879;
+    border-bottom: none;
+    /* Remove border from last row */
+  }
+
+  /* Payment method heading */
+  .payment-method {
+    font-size: 15px;
+    margin-left: 30px;
+    color: #333;
+    font-weight: 600;
+  }
+
+  /* Button styling */
+  .btn-accent {
+    
+    color: #1c1427;
+    text-transform: capitalize;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-accent:hover {
+    
+    color: #fff;
+  }
+
+  /* Center text for log-title */
+  .log-title {
+    margin-bottom: 20px;
+  }
+
+  /* Ensure responsiveness for smaller screens */
+  @media (max-width: 576px) {
+    .padding60 {
+      padding: 20px;
+    }
+
+    .payment-table th,
+    .payment-table td,
+    .order-table th,
+    .order-table td {
+      font-size: 14px;
+    }
+
+    .payment-method {
+      margin-left: 15px;
+    }
+  }
+</style>
 <!-- pages-title-start -->
-<div class="pages-title section-padding">
+<br><br><br>
+<!-- pages-title-end -->
+<!-- Payment content section start -->
+<section class="pages checkout section-padding bg-dark">
   <div class="container">
     <div class="row">
-      <div class="col-xs-12">
-        <div class="pages-title-text text-center">
-          <h2 style="color:#f4cca4">Payment</h2>
-          <ul class="text-left">
-            <li><a style="color:#d99879" href="\">Home </a></li>
-            <li style="color:#d99879"><span> // </span>Chcekout</li>
-          </ul>
+      <div class="col-12 col-sm-6">
+        <div class="card-panel padding60">
+          <div class="log-title text-center">
+            <h2><strong style="color: black;" class="text-accent">Billing Address</strong></h2>
+          </div>
+          <div class="cart-form-text pay-details table-responsive text-center">
+            <table class="table payment-table">
+              <tbody>
+                <tr>
+                  <th style="color: black;">Name:</th>
+                  <td>{{ order.full_name }}</td>
+                </tr>
+                <tr>
+                  <th style="color: black;">Order Number:</th>
+                  <td>{{ order.order_number }}</td>
+                </tr>
+                <tr>
+                  <th style="color: black;">Email:</th>
+                  <td>{{ order.email }}</td>
+                </tr>
+                <tr>
+                  <th style="color: black;">Phone Number:</th>
+                  <td>{{ order.phone }}</td>
+                </tr>
+                {% if order.order_note %}
+                <tr>
+                  <th style="color: black;">Order Note:</th>
+                  <td>{{ order.order_note }}</td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-<!-- pages-title-end -->
-<!-- Checkout content section start -->
-<section style="margin-bottom:50;background:#1c1427" class="pages checkout section-padding">
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12 col-sm-6">
-        <div style="border-radius:20px;" class="padding60">
-          
+      <div class="col-12 col-sm-6">
+        <div class="card-panel padding60">
           <div class="log-title text-center">
-            <h2><strong style="color:#d99879">Billing Address</strong></h2><br>
+            <h2><strong style="color: black;" class="text-accent">Order</strong></h2>
           </div>
           <div class="cart-form-text pay-details table-responsive text-center">
-            <table class="tablee" style="width:100%" >
+            <table class="table order-table">
               <thead>
-                
-              </thead>
-              <tbody>
-                
                 <tr>
-                  <th style="font-size:15px">Name</th>
-                  <td style="font-size:15px">{{order.full_name}}</td>
-                </tr>
-                <tr>
-                  <th style="font-size:15px">Order Number</th>
-                  <td style="font-size:15px">{{order.order_number}}</td>
-                </tr>
-                <tr>
-                  <th style="font-size:15px">Email</th>
-                  <td style="font-size:15px">{{order.email}}</td>
-                </tr>
-                <tr>
-                  <th style="font-size:15px">Phone Number</th>
-                  <td style="font-size:15px">{{order.phone}}</td>
-                </tr>
-                
-                
-                
-                <!--{% if order.order_note %}
-                <tr>
-                  <th style="font-size:15px">Order Note</th>
-                  <td style="font-size:15px">{{order.order_note}}</td>
-                </tr>
-                {% endif %}-->
-              </tbody>
-              <br>
-            </table><br><br>
-            <div class="log-title text-center">
-              <h2><strong style="color:#d99879">Payment Method</strong></h2><br>
-            </div>
-          <h3 style="font-size:15px; margin-left:30px" class="floatleft">Mpesa</h3><br><br>
-          </div>
-        </div><br>
-      </div>
-      <div class="col-xs-12 col-sm-6">
-        <div style="border-radius:20px" class="padding60">
-          <div class="log-title text-center">
-            <h2><strong style="color:#d99879">order</strong></h2>
-          </div><br><br>
-          <div class="cart-form-text pay-details table-responsive text-center">
-            <table style="width:100%;" >
-              <thead style="border-radius:20px ;">
-                <tr >
-                  <th style="color:#f4cca4;background:#1c1427;border-radius:20px 0 0 20px ;">Product</th>
-                  <td style="color:#f4cca4;background:#1c1427;border-radius:0 20px 20px 0 ;">Total</td>
+                  <th style="color: black;"><b>Product</b></th>
+                  <th style="color: black;"><b>Total<b></th>
                 </tr>
               </thead>
               <tbody>
                 {% for cart_item in cart_items %}
                 <tr>
-                  <th>{{cart_item.product.name}} x {{cart_item.quantity}}</th>
-                  <td>Ksh {{cart_item.sub_total}}</td>
+                  <th style="color: #333;">{{ cart_item.product.name }} x {{ cart_item.quantity }}</th>
+                  <td>Ksh {{ cart_item.sub_total }}</td>
                 </tr>
                 {% endfor %}
-                
-            
-                <tr style="color:#d99879">
-                  <th>Order total</th>
-                  <td>Ksh {{order_total}}</td>
+                <tr>
+                  <th style="color: #333;">Order Total</th>
+                  <td style="color: #333;">Ksh {{ order_total }}</td>
                 </tr>
               </tbody>
-              <tfoot>
-              </tfoot>
             </table>
-            <div style="width:100%" class="submit-text">
-              
-                <button id="mpesa-pay-btn" class="btn btn-warning"
-                style="background:#f4cca4;color:#1c1427; width:100% ; text-transform: capitalize;font-size:15px"><b>Make Payment
-                  </b></button>
-              
-              
+            <div class="submit-text">
+              <button id="mpesa-pay-btn" class="btn btn-primary btn-accent w-100">Make payment with M-Pesa</button>
             </div>
           </div>
         </div>
@@ -118,18 +242,18 @@
 
 <script>
   function getCookie(name) {
-      let cookieValue = null;
-      if (document.cookie && document.cookie !== '') {
-          const cookies = document.cookie.split(';');
-          for (let i = 0; i < cookies.length; i++) {
-              const cookie = cookies[i].trim();
-              if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                  break;
-              }
-          }
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
       }
-      return cookieValue;
+    }
+    return cookieValue;
   }
 
   var csrftoken = getCookie('csrftoken');
@@ -137,105 +261,145 @@
   var orderID = "{{ order.order_number }}";
   var payment_method = "Mpesa";
   var phone = "{{ order.phone }}";
-  var stkPushUrl = "https://5741-154-159-237-61.ngrok-free.app/orders/online/lipa";
-  var checkStatusUrl = "https://5741-154-159-237-61.ngrok-free.app/orders/query";
+  var stkPushUrl = "https://8155579dab07.ngrok-free.app/orders/online/lipa/";
+  var checkStatusUrl = "https://8155579dab07.ngrok-free.app/orders/query/";
   var redirect_url = "{% url 'orders:order_complete' %}";
   var checkout = ""
 
   document.getElementById("mpesa-pay-btn").addEventListener("click", function () {
-      initiateSTKPush();
+    initiateSTKPush();
   });
 
   function initiateSTKPush() {
-      fetch(stkPushUrl, {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-              
-          },
-          body: JSON.stringify({
-              orderID: orderID,
-              amount: amount,
-              phone: phone,
-          }),
+    fetch(stkPushUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        orderID: orderID,
+        amount: amount,
+        phone: phone,
+      }),
+    })
+      .then(response => {
+        if (!response.ok) {
+          console.error(`STK Push initiation failed with status: ${response.status}`);
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
       })
-      .then(response => response.json())
       .then(data => {
-          console.log("STK Push initiated:", data);
-          checkout = data.CheckoutRequestID
-          console.log("CheckoutRequestID set to:", checkout);
-
-          alert("Confirmation prompt sent to your phone. Please enter your PIN to confirm the payment.");
-
-          if (!checkout) {
-            console.error("CheckoutRequestID is not set!");
-          } else {
-
-            checkSTKPushStatus();
-          }
-
+        console.log("STK Push initiated:", data);
+        if (!data.CheckoutRequestID) {
+          console.error("No CheckoutRequestID in response:", data);
+          alert("Failed to initiate payment. Please try again.");
+          return;
+        }
+        checkout = data.CheckoutRequestID;
+        console.log("CheckoutRequestID set to:", checkout);
+        alert("Confirmation prompt sent to your phone. Please enter your PIN to confirm the payment.");
+        checkSTKPushStatus();
       })
       .catch(error => {
         console.error("STK Push error:", error);
         alert("An error occurred while initiating the payment. Please try again.");
       });
   }
-
   function checkSTKPushStatus() {
-      console.log(checkout)
-      let interval = setInterval(() => {
-          fetch(checkStatusUrl + "/", {
-              method: "POST",
-              headers: {
-                  
-                  "Content-Type": "application/json",
-              },
+    console.log("Starting STK status polling for CheckoutRequestID:", checkout);
+    if (!checkout) {
+      console.error("CheckoutRequestID is missing!");
+      alert("Payment initiation failed. Please try again.");
+      return;
+    }
 
-              body: JSON.stringify({
-                checkout: checkout
-              }),
-          })
-          .then(response => response.json())
-          .then(data => {
-              console.log("STK Callback Response:", data);
-              let resultDesc = data.ResultDesc;
-              let transactionID = checkout;
-
-              if (resultDesc === "The service request is processed successfully.") {
-                  clearInterval(interval);
-                  alert("Payment successful!");
-                  sendData(transactionID );//resultDesc
-              } else if (resultDesc === "Request cancelled by user") {
-                  clearInterval(interval);
-                  alert("Request cancelled by user");
-              } else if (resultDesc === "DS timeout user cannot be reached") {
-                  clearInterval(interval);
-                  alert("DS timeout user cannot be reached");
-              }
-          })
-          .catch(error => console.error("Callback error:", error));
-      }, 20000);  // Check status every 5 seconds
-  }
-
-  function sendData(transactionID) {//resultDesc
-      fetch("{% url 'orders:payments' %}", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-              "X-CSRFToken": csrftoken,
-          },
-          body: JSON.stringify({
-              orderID: orderID,
-              transID: transactionID,//resultDesc
-              payment_method: "Mpesa",
-              status: "Completed",
-          }),
+    let attempts = 0;
+    const maxAttempts = 6; // Stop after ~2 minutes (6 * 20 seconds)
+    let interval = setInterval(() => {
+      attempts++;
+      console.log(`Polling STK status (attempt ${attempts})...`);
+      if (!checkout) {
+        console.error("CheckoutRequestID is still missing, stopping polling.");
+        clearInterval(interval);
+        alert("Payment initiation failed. Please try again.");
+        return;
+      }
+      fetch(checkStatusUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          checkout: checkout
+        }),
       })
+        .then(response => {
+          if (!response.ok) {
+            console.error(`HTTP error! Status: ${response.status}`);
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("STK Callback Response:", data);
+          let resultDesc = data.ResultDesc;
+          let transactionID = checkout;
+
+          console.log("Exact ResultDesc:", resultDesc);
+
+          let normalizedDesc = resultDesc.toLowerCase().replace(/[.!]/g, "").trim();
+
+          if (normalizedDesc === "the service request is processed successfully") {
+            clearInterval(interval);
+            console.log("Showing alert: Payment successful");
+            alert("Payment successful!");
+            sendData(transactionID);
+          } else if (normalizedDesc === "request cancelled by user") {
+            clearInterval(interval);
+            console.log("Showing alert: Request cancelled by user");
+            alert("Request cancelled by user");
+          } else if (normalizedDesc === "ds timeout user cannot be reached") {
+            clearInterval(interval);
+            console.log("Showing alert: DS timeout");
+            alert("DS timeout user cannot be reached");
+          } else if (normalizedDesc === "the balance is insufficient for the transaction") {
+            clearInterval(interval);
+            console.log("Showing alert: Insufficient balance");
+            alert("The balance is insufficient for the transaction.");
+          } else if (attempts >= maxAttempts) {
+            clearInterval(interval);
+            console.log("Max polling attempts reached");
+            alert("Payment status check timed out. Please try again.");
+          }
+        })
+        .catch(error => {
+          console.error("Callback error:", error);
+          clearInterval(interval);
+          alert("An error occurred while checking payment status.");
+        });
+    }, 20000);
+  }
+  function sendData(transactionID) {
+    fetch("{% url 'orders:payments' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken,
+      },
+      body: JSON.stringify({
+        orderID: orderID,
+        transID: transactionID,
+        payment_method: "Mpesa",
+        status: "Completed",
+      }),
+    })
       .then(response => response.json())
       .then(data => {
-          window.location.href = redirect_url + "?order_number=" + data.order_number + "&payment_id=" + data.transID;
+        window.location.href = redirect_url + "?order_number=" + data.order_number + "&payment_id=" + data.transID;
       })
       .catch(error => console.error("Error saving payment:", error));
   }
 </script>
+<br>
 {% endblock %}
