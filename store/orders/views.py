@@ -265,7 +265,7 @@ def lipa_na_mpesa(request):
                 "PartyA": phone,
                 "PartyB": LipanaMpesaPassword.business_short_code,
                 "PhoneNumber": phone,
-                "CallBackURL": "https://8155579dab07.ngrok-free.app/orders/query/",
+                "CallBackURL": "https://bokxstore.onrender.com/orders/query/",
                 "AccountReference": "Leslie",
                 "TransactionDesc": "Testing stk push"
             }
