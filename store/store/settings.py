@@ -73,16 +73,16 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",  # Django frontend
-    "https://8155579dab07.ngrok-free.app",  # Ngrok backend
+    "https://bokxstore.onrender.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://localhost:8000',  # Optionally include localhost
-    'https://8155579dab07.ngrok-free.app'  # Your ngrok domain
+    "https://bokxstore.onrender.com",
 ]
 
-CSRF_COOKIE_DOMAIN = "https://8155579dab07.ngrok-free.app"
+CSRF_COOKIE_DOMAIN = "bokxstore.onrender.com"
 
 
 
