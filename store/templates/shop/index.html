@@ -2,6 +2,30 @@
 {% load static %}
 {% block title %}E-Store{% endblock title %}
 {% block content %}
+<style>
+    .image-wrapper {
+        flex-shrink: 0;
+        /* Prevent the image wrapper from shrinking in the flex container */
+    }
+
+    @media (max-width: 576px) {
+        .image-wrapper img {
+            width: 150px;
+            /* Reduce size on smaller screens */
+            height: 150px;
+        }
+
+        .d-flex {
+            padding: 1rem !important;
+            /* Reduce padding on small screens */
+        }
+
+        .display-3 {
+            font-size: 2.5rem !important;
+            /* Reduce heading size on small screens */
+        }
+    }
+</style>
 <!-- Carousel Start -->
 <div class="container-fluid carousel bg-light px-0">
     <div class="row g-0 justify-content-end">
@@ -137,25 +161,27 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-6 wow fadeInLeft" data-wow-delay="0.2s">
-                <a href="#" class="d-flex align-items-center justify-content-between border bg-white rounded p-4">
-                    <div>
+                <a href="#" class="d-flex align-items-center border bg-white rounded p-4 flex-column flex-lg-row">
+                    <div class="text-start me-lg-4">
                         <p class="text-muted mb-3">Find The Best Deals for You!</p>
                         <h3 style="color: #00272b;">Plain Hoodies</h3>
-                        <h1 class="display-3 text-secondary mb-0">40% <span style="color: #00272b;" class="fw-normal">Off</span>
-                        </h1>
+                        <h1 class="display-3 text-secondary mb-0">40% <span style="color: #00272b;" class="fw-normal">Off</span></h1>
                     </div>
-                    <img src="{% static 'img/header.jpg' %}" class="img-fluid" alt="" style="width: 200px; height: 200px; object-fit: cover;">
+                    <div class="image-wrapper">
+                        <img src="{% static 'img/header.jpg' %}" class="img-fluid rounded" alt="" style="width: 200px; height: 200px; object-fit: cover;">
+                    </div>
                 </a>
             </div>
             <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.3s">
-                <a href="#" class="d-flex align-items-center justify-content-between border bg-white rounded p-4">
-                    <div>
+                <a href="#" class="d-flex align-items-center border bg-white rounded p-4 flex-column flex-lg-row">
+                    <div class="text-start me-lg-4">
                         <p class="text-muted mb-3">Find The Best Deals for You!</p>
                         <h3 style="color: #00272b;">Printed T-shirts</h3>
-                        <h1 class="display-3 text-secondary mb-0">20% <span style="color: #00272b;" class=" fw-normal">Off</span>
-                        </h1>
+                        <h1 class="display-3 text-secondary mb-0">20% <span style="color: #00272b;" class="fw-normal">Off</span></h1>
                     </div>
-                    <img src="{% static 'img/header.jpg' %}" class="img-fluid" alt="" style="width: 200px; height: 200px; object-fit: cover;">
+                    <div class="image-wrapper">
+                        <img src="{% static 'img/header.jpg' %}" class="img-fluid rounded" alt="" style="width: 200px; height: 200px; object-fit: cover;">
+                    </div>
                 </a>
             </div>
         </div>
