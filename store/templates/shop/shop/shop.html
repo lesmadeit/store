@@ -64,10 +64,16 @@
             </div>
             <div class="col-lg-9 wow fadeInUp" data-wow-delay="0.1s">
                 <div class="row g-4">
-                    <div class="col-xl-7">
-                        <div class="input-group w-100 mx-auto d-flex">
-                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                    <div class="col-md-4 col-lg-6 text-center">
+                        <div class="position-relative ps-4">
+                            <div class="d-flex border rounded-pill">
+                                <form id="searchh" action="{% url 'shop:search' %}" method="GET" class="w-100 d-flex">
+                                    <input class="form-control border-0 rounded-pill w-100 py-3" type="text" name="keyword" placeholder="Search Products">
+                                    <button type="submit" class="btn btn-primary rounded-pill py-3 px-5" style="border: 0;">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     <!--<div class="col-lg-4 col-xl-2">
