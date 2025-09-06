@@ -166,8 +166,77 @@
     <!-- Topbar End -->
 
     <!-- Navbar & Hero Start -->
+    <style>
+        /* Ensure the mobile header is full-width and uses Flexbox */
+        .mobile-nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        /* Override Bootstrap's navbar-toggler to align left */
+        .navbar-toggler {
+            margin-right: auto;
+            padding: 0;
+        }
+
+        /* Ensure the logo stays close to the hamburger menu */
+        .navbar-brand {
+            margin-left: 10px;
+        }
+
+        /* Cart icon alignment */
+        .cart-icon {
+            margin-left: 5px; /* Reduced from 10px to bring cart closer to cog */
+        }
+
+        /* Style the dropdown toggle (cog icon) */
+        .dropdown-toggle {
+            padding: 0 5px; /* Reduced padding to minimize gap */
+        }
+
+        /* Adjust padding for mobile view */
+        @media (max-width: 991.98px) {
+            .nav-bar .row {
+                padding-left: 15px !important;
+                padding-right: 15px !important;
+            }
+
+            /* Style the dropdown menu for mobile */
+            .dropdown-menu {
+                position: absolute;
+                right: 0; /* Align dropdown to the right edge of the parent */
+                left: auto; /* Prevent left alignment */
+                max-width: 200px; /* Set a maximum width to prevent overflow */
+                width: 100%; /* Allow it to take available space up to max-width */
+                min-width: 125px; /* Ensure it’s not too narrow */
+                margin-right: 10px; /* Add margin to avoid touching the screen edge */
+                background: #FFFFFF; /* Retain background color */
+                border: 1px solid #dee2e6; /* Optional: Add a border for visibility */
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for depth */
+            }
+
+            /* Ensure dropdown items are readable and fit */
+            .dropdown-item {
+                white-space: nowrap; /* Prevent text wrapping */
+                overflow: hidden; /* Hide overflow text */
+                text-overflow: ellipsis; /* Add ellipsis for long text */
+                padding: 8px 12px; /* Adjust padding for compactness */
+            }
+        }
+
+        /* Ensure dropdown menu doesn’t overflow on very small screens */
+        @media (max-width: 576px) {
+            .dropdown-menu {
+                max-width: 50vw; /* Use viewport width to constrain size */
+                margin-right: 5px; /* Reduce margin for smaller screens */
+            }
+        }
+    </style>
     <div class="container-fluid nav-bar p-0">
         <div class="row gx-0 bg-primary px-5 align-items-center">
+            <!-- Categories Dropdown (Visible on Desktop) -->
             <div class="col-lg-3 d-none d-lg-block">
                 <nav class="navbar navbar-light position-relative" style="width: 250px;">
                     <button class="navbar-toggler border-0 fs-4 w-100 px-0 text-start" type="button"
@@ -180,7 +249,7 @@
                                 {% for category in categories %}
                                 <li>
                                     <div class="categories-bars-item">
-                                        <a  href="{{ category.get_category_slug_url }}">{{ category.name }}</a>
+                                        <a href="{{ category.get_category_slug_url }}">{{ category.name }}</a>
                                     </div>
                                 </li>
                                 {% endfor %}
@@ -189,29 +258,54 @@
                     </div>
                 </nav>
             </div>
+
+            <!-- Main Navbar -->
             <div class="col-12 col-lg-9">
                 <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-                    <a href="" class="navbar-brand d-block d-lg-none">
-                        <h1 class="display-5 text-secondary m-0"><i
-                                class="fas fa-shopping-bag text-white me-2"></i>Bokx</h1>
-                        <!--<img src="{% static 'img/logo2.jpg' %}" alt="Logo" style="max-width: 150px; height: 80px;">-->
-                    
-                    </a>
-                    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarCollapse">
-                        <span style="color: white;" class="fa fa-bars fa-1x"></span>
-                    </button>
+                    <!-- Mobile Header (Visible on Mobile) -->
+                    <div class="d-flex w-100 align-items-center d-lg-none mobile-nav-header">
+                        <!-- Hamburger Menu -->
+                        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                            <span style="color: white;" class="fa fa-bars fa-1x"></span>
+                        </button>
+                        <!-- Logo -->
+                        <a href="" class="navbar-brand mx-2">
+                            <h1 style="color: #FFFFFF;" class="display-5  m-0"><i class="fas fa-shopping-bag text-white me-2"></i>Bokx</h1>
+                        </a>
+                        <!-- Spacer to push cart to the right -->
+                        <div class="flex-grow-1"></div>
+                        <div class="dropdown">
+                        <a href="#" class="text-muted dropdown-toggle" style="color: #0c0c0c;" data-bs-toggle="dropdown">
+                            <i style="color: #FFFFFF;" class="fa fa-cog"></i>
+                        </a>
+                        <ul class="dropdown-menu" style="background: #FFFFFF;">
+                            <li><a class="dropdown-item"  href="{% url 'accounts:dashboard' %}">Dashboard</a></li>
+                            <li><a class="dropdown-item"  href="{% url 'cart:cart' %}">My cart</a></li>
+                            <li><a class="dropdown-item"  href="{% url 'orders:checkout' %}">Check out</a></li>
+                        </ul>
+                    </div>
+                        <!-- Cart Icon -->
+                        <div class="cart-icon">
+                            <a href="{% url 'cart:cart' %}" class="text-muted d-flex align-items-center justify-content-center">
+                                <span>
+                                    <i style="color: #ffffff;" class="fas fa-shopping-cart"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible Menu -->
                     <div class="collapse navbar-collapse" id="navbarCollapse">
                         <div class="navbar-nav ms-auto py-0">
                             <a style="color: white;" href="\" class="nav-item nav-link active">Home</a>
                             <a style="color: white;" href="{% url 'shop:shop' %}" class="nav-item nav-link">Shop</a>
                             <a style="color: white;" href="{% url 'shop:featured_products' %}" class="nav-item nav-link">Featured</a>
-                            
                             <a style="color: white;" href="{% url 'shop:contact_us' %}" class="nav-item nav-link me-2">Contact</a>
-                            
                         </div>
-                        <a href="" class="btn btn-secondary rounded-pill py-2 px-4 px-lg-3 mb-3 mb-md-3 mb-lg-0"><i
-                                class="fa fa-mobile-alt me-2"></i> +0123 456 7890</a>
+                        <a href="" class="btn btn-secondary rounded-pill py-2 px-4 px-lg-3 mb-3 mb-md-3 mb-lg-0">
+                            <i class="fa fa-mobile-alt me-2"></i> +0123 456 7890
+                        </a>
                     </div>
                 </nav>
             </div>
