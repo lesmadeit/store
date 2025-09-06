@@ -270,7 +270,7 @@
                             <span style="color: white;" class="fa fa-bars fa-1x"></span>
                         </button>
                         <!-- Logo -->
-                        <a href="" class="navbar-brand mx-2">
+                        <a href="\" class="navbar-brand mx-2">
                             <h1 style="color: #FFFFFF;" class="display-5  m-0"><i class="fas fa-shopping-bag text-white me-2"></i>Bokx</h1>
                         </a>
                         <!-- Spacer to push cart to the right -->
@@ -302,7 +302,13 @@
                             <a style="color: white;" href="{% url 'shop:shop' %}" class="nav-item nav-link">Shop</a>
                             <a style="color: white;" href="{% url 'shop:featured_products' %}" class="nav-item nav-link">Featured</a>
                             <a style="color: white;" href="{% url 'shop:contact_us' %}" class="nav-item nav-link me-2">Contact</a>
-                        </div>
+                            {% if user.id is None %}
+                            <a style="color: white;" href="{% url 'accounts:login' %}" class="nav-item nav-link">Login</a>
+                            <a style="color: white;" href="{% url 'accounts:register' %}" class="nav-item nav-link">Register</a>
+                            {% else %}
+                            <a style="color: white;" href="{% url 'accounts:logout' %}" class="nav-item nav-link">Logout</a>
+                            {% endif %}
+                        </div><br>
                         <a href="" class="btn btn-secondary rounded-pill py-2 px-4 px-lg-3 mb-3 mb-md-3 mb-lg-0">
                             <i class="fa fa-mobile-alt me-2"></i> +0123 456 7890
                         </a>
