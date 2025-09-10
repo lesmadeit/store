@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load static math_filters %}
 {% block title %}E-Store{% endblock title %}
 {% block content %}
 <style>
@@ -60,24 +61,39 @@
             </div>
         </div>
         <div class="col-12 col-lg-5 col-xl-3 wow fadeInRight" data-wow-delay="0.1s">
-            <div class="carousel-header-banner h-100">
-                <img src="{% static 'img/header.jpg' %}" class="img-fluid w-100 h-100" style="object-fit: cover;"
-                    alt="Image">
-                <div class="carousel-banner-offer">
-                    <p class="bg-primary text-white rounded fs-5 py-2 px-4 mb-0 me-3">Save Ksh 48.00</p>
-                    <p style="color: white;" class=" fs-5 fw-bold mb-0">Special Offer</p>
-                </div>
-                <div class="carousel-banner">
-                    <div class="carousel-banner-content text-center p-4">
-                        <a style="color: white;" href="#" class="d-block mb-2">SmartPhone</a>
-                        <a href="#" class="d-block text-white fs-3">Plain T-shirts </a>
-                        <del class="me-2 text-white fs-5">Ksh 1,250.00</del>
-                        <span style="color: #00272b;;" class=" fs-5">Ksh 1,050.00</span>
+            {% if latest_product %}
+                <div class="carousel-header-banner h-100">
+                    <img src="{{ latest_product.image.url }}" class="img-fluid w-100 h-100" style="object-fit: cover;" alt="{{ latest_product.name }}">
+                    <div class="carousel-banner-offer">
+                        <p class="bg-primary text-white rounded fs-5 py-2 px-4 mb-0 me-3">
+                            Save Ksh {{ latest_product.discount|subtract:latest_product.price|floatformat:2 }}
+                        </p>
+                        <p style="color: white;" class="fs-5 fw-bold mb-0">Special Offer</p>
                     </div>
-                    <a style="border-color: #00272b;" href="#" class="btn btn-primary rounded-pill py-2 px-4"><i
-                            class="fas fa-shopping-cart me-2"></i> Add To Cart</a>
+                    <div class="carousel-banner">
+                        <div class="carousel-banner-content text-center p-4">
+                            <a style="color: white;" href="{% url 'shop:categories' latest_product.category.slug %}" class="d-block mb-2">
+                                {{ latest_product.category.name }}
+                            </a>
+                            <a href="{% url 'shop:product_details' latest_product.category.slug latest_product.slug %}" class="d-block text-white fs-3">
+                                {{ latest_product.name }}
+                            </a>
+                            <del class="me-2 text-white fs-5">Ksh {{ latest_product.discount|floatformat:2 }}</del>
+                            <span style="color: #00272b;" class="fs-5">
+                                Ksh {{ latest_product.price|floatformat:2 }}
+                            </span>
+                        </div>
+                        <a style="border-color: #00272b;" href="{% url 'cart:add_cart' latest_product.id %}" 
+                        class="btn btn-primary rounded-pill py-2 px-4">
+                            <i class="fas fa-shopping-cart me-2"></i> Add To Cart
+                        </a>
+                    </div>
                 </div>
-            </div>
+            {% else %}
+                <div class="carousel-header-banner h-100">
+                    <p>No discounted products available at the moment.</p>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -238,7 +254,7 @@
                                         {% endif %}
                                     </div>
                                     <div class="text-center rounded-bottom p-4">
-                                        <a href="{{ product.get_product_details_url }}" class="d-block mb-2">{{ product.category.name|default:"Product" }}</a>
+                                        <a href="{% url 'shop:categories' product.category.slug %}" class="d-block mb-2">{{ product.category.name|default:"Product" }}</a>
                                         <a href="{{ product.get_product_details_url }}" class="d-block h4">{{ product.name }}</a>
                                         {% if product.discount != 0.00 %}
                                         <del class="me-2 fs-5">Ksh {{ product.discount }}</del>

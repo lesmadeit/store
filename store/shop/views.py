@@ -29,6 +29,9 @@ def home(request):
     products = Product.objects.all().filter(is_available=True)
     featured_products = Product.objects.filter(featured=True, is_available=True)
     new_products = Product.objects.filter(new=True, is_available=True)  # Added for new arrivals
+    latest_product = Product.objects.filter(is_available=True, discount__gt=0).order_by('-id').first()  # Get the most recent product with discount
+    
+    
     
     # Paginate featured products (4 per page)
     featured_paginator = Paginator(featured_products, 4)
@@ -48,8 +51,10 @@ def home(request):
         'featured_products_count': featured_products_count,
         'new_products': paged_new_products,  # Added for new arrivals
         'new_products_count': new_products_count,  # Added for new arrivals
+        'latest_product': latest_product,
     }
     return render(request, 'shop/index.html', context)
+
 
 
 def shop(request, category_slug=None):
